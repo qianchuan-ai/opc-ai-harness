@@ -36,8 +36,24 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [modlens](recipes/视觉与OCR/modlens/) | 图片 / OCR / 截图结构化解析 | 贴设计稿截图让 agent 读懂 | ✅ 认（⚠️ Win 有 bin 警告） |
 | [dsh-turn-rewind](recipes/试错与回退/dsh-turn-rewind/) | 会话状态回退 | 改坏了能退，试错少成本 | ✅ 认 |
 | [treg](recipes/研究工具目录/treg/) | 2600+ 外部接口目录（按事检索） | 研究向，需免费 token | ⚠️ 存疑（ingredient） |
+| [dsh-deepread](reviews/dsh-deepread.md) | 网页 / 文件 / 文本精读（内容抓取合规源） | 内容研究、竞品拆解、长文归纳 | ✅ 认（8.3s 装通） |
+| [dsh-plan-execute](reviews/dsh-plan-execute.md) | 规划/执行双模型路由（省 API） | 控成本——但 dsh 原生就支持，无需装 | ❌ 否 · 装失败 + 劝退 |
+| [dsh-library](reviews/dsh-library.md) | 本地优先文档知识库（RAG） | 本地 KB、数据不出本机 | ⚠️ 坑已定位（allowBuilds） |
 
 > 全部于 2026-08-17 由小p 代跑 `dsh plugin --profile web add` 实装，`dsh plugin --profile web list` 复核在册。
+
+---
+
+## 深度评测（reviews · 带交付的实测）
+
+> "门面即内容"——下面每一篇都是**真实跑过、踩过坑、写了劝退阈值**的评测，不是功能简介。你拿去当公众号/小红书素材的底稿都行。
+
+| 评测 | 有没有真装 | 核心结论 |
+|---|---|---|
+| [dsh-deepread](reviews/dsh-deepread.md) | ✅ 装成 | 内容精读合规源，零编译最省心，OPC 首推"先用起来" |
+| [dsh-plan-execute](reviews/dsh-plan-execute.md) | ❌ 装失败 | 双模型路由 dsh 原生就有，别装这仓库版——敢写劝退的样板 |
+| [dsh-library](reviews/dsh-library.md) | ⚠️ 坑已定位 | 编译型插件必加 `allowBuilds`；本地 KB 零模型下载首选 |
+| [通用安装坑](reviews/通用安装坑.md) | — | 6 条跨插件真实坑 + 安装黄金命令（付费排障手册原材料） |
 
 ---
 
@@ -57,6 +73,8 @@ CODEBUDDY_SESSION_ID= npx -y @deepseek-ai/dsh plugin --profile web add <owner/re
 - **缺 pnpm**：Developer Preview 文档没强调，但 `dsh plugin add` 依赖 pnpm。先 `npm i -g pnpm`。
 - **GitHub HEAD 偶发 ECONNRESET / ETIMEDOUT**：网络抖动，pnpm 自动重试，不用管。
 - **首装 compose 重**：首次拉全量 profile 依赖可能 1–3 分钟，别当卡死。
+
+> 更全的 6 条跨插件坑（含 `allowBuilds`、`私有仓库装不上`、本沙箱 `npm 缓存锁`）与**安装黄金命令**，见 [reviews/通用安装坑.md](reviews/通用安装坑.md)。
 
 ---
 
