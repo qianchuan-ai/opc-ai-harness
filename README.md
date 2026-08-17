@@ -1,4 +1,4 @@
-# dsh-opc-recipes · 一人公司 dsh 插件策展库
+# opc-ai-harness · 一人公司 dsh 插件策展库
 
 > **开源下来不一定好用，我替你先踩坑。**
 
