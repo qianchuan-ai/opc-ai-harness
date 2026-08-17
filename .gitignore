@@ -1,0 +1,14 @@
+# 依赖 / 环境
+node_modules/
+.pnpm-store/
+*.log
+
+# 本地配置（不进库）
+.local/
+*.local.yml
+secrets.yml
+.env
+
+# 系统
+.DS_Store
+Thumbs.db
