@@ -87,6 +87,10 @@
   .face .wxid{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:rgba(91,140,255,.12);border:1px solid rgba(91,140,255,.4);color:var(--accent);font-weight:700;font-size:14px;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.5px}
   .face .wxid:hover{background:rgba(91,140,255,.2)}
   .face .wxid .cp{font-size:11px;color:var(--faint);font-weight:400;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;letter-spacing:0}
+  .face .social{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .face .social a,.face .social span{display:inline-flex;align-items:center;gap:4px;background:rgba(91,140,255,.12);border:1px solid rgba(91,140,255,.4);color:var(--accent);font-weight:700;font-size:13px;padding:7px 13px;border-radius:10px}
+  .face .social a:hover{background:rgba(91,140,255,.2);text-decoration:none}
+  .face .social span{color:var(--faint);font-weight:400;border-color:var(--line);background:var(--bg2)}
   footer{padding:40px 0 60px;color:var(--faint);font-size:13px;text-align:center;border-top:1px solid var(--line)}
   footer a{color:var(--muted)}
   @media(max-width:680px){
@@ -265,7 +269,7 @@
   <p class="lead">三个阵地，各解决你一个问题——技术证据、持续更新、直接对话。</p>
   <div class="faces">
     <div class="face"><div class="ic">🐙</div><h3>GitHub <span class="badge" style="background:var(--bg2);color:var(--faint);border:1px solid var(--line);font-size:11px">你在这</span></h3><p>证据库：每个插件我都替你真装过，坑和上手命令全写在这</p></div>
-    <div class="face"><div class="ic">📣</div><h3>公众号 · 小红书 · 视频号</h3><p>内容门面：把 OPC 策展讲给主理人听，避坑笔记持续更新</p></div>
+    <div class="face"><div class="ic">📣</div><h3>公众号 · 小红书 · 视频号</h3><p>内容门面：把 OPC 策展讲给主理人听，避坑笔记持续更新</p><div class="social"><a href="https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072" target="_blank" rel="noopener">小红书主页 ↗</a><span>公众号 · 视频号 待补</span></div></div>
     <div class="face"><div class="ic">💬</div><h3>微信</h3><p>私域：有问题直接找谦川，信任在这沉淀</p><div class="wxid" onclick="navigator.clipboard.writeText('sheshouzuo3366').then(()=>{var t=this.querySelector('.cp');var o=t.textContent;t.textContent='已复制';setTimeout(()=>t.textContent=o,1500)})"><span>sheshouzuo3366</span><span class="cp">点击复制</span></div></div>
   </div>
 </section>
