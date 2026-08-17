@@ -39,6 +39,8 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [dsh-deepread](reviews/dsh-deepread.md) | 网页 / 文件 / 文本精读（内容抓取合规源） | 内容研究、竞品拆解、长文归纳 | ✅ 认（8.3s 装通） |
 | [dsh-plan-execute](reviews/dsh-plan-execute.md) | 规划/执行双模型路由（省 API） | 控成本——但 dsh 原生就支持，无需装 | ❌ 否 · 装失败 + 劝退 |
 | [dsh-library](reviews/dsh-library.md) | 本地优先文档知识库（RAG） | 本地 KB、数据不出本机 | ⚠️ 坑已定位（allowBuilds） |
+| [dsh-agent-teams](reviews/dsh-agent-teams.md) | 多 Agent 协作 / 角色化团队 | 一人扛多活，把任务分派给多个 agent | ✅ 认（1m9s 装通，零编译） |
+| [dsh-memory-evolve](reviews/dsh-memory-evolve.md) | 跨会话长记忆 + 自我进化 | 反复协作不重复交代，AI 越用越懂你 | ✅ 认（1m34s 装通，零编译） |
 
 > 全部于 2026-08-17 由小p 代跑 `dsh plugin --profile web add` 实装，`dsh plugin --profile web list` 复核在册。
 
@@ -53,6 +55,8 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [dsh-deepread](reviews/dsh-deepread.md) | ✅ 装成 | 内容精读合规源，零编译最省心，OPC 首推"先用起来" |
 | [dsh-plan-execute](reviews/dsh-plan-execute.md) | ❌ 装失败 | 双模型路由 dsh 原生就有，别装这仓库版——敢写劝退的样板 |
 | [dsh-library](reviews/dsh-library.md) | ⚠️ 坑已定位 | 编译型插件必加 `allowBuilds`；本地 KB 零模型下载首选 |
+| [dsh-agent-teams](reviews/dsh-agent-teams.md) | ✅ 装成 | 多 Agent 角色化协作编排，一人扛多活把任务分派出去；纯 Cordis 零编译，1m9s 装通 |
+| [dsh-memory-evolve](reviews/dsh-memory-evolve.md) | ✅ 装成 | 跨会话长记忆 + 自我进化，本地轻量；反复协作不重复交代，AI 越用越懂你 |
 | [通用安装坑](reviews/通用安装坑.md) | — | 6 条跨插件真实坑 + 安装黄金命令（付费排障手册原材料） |
 
 ---
