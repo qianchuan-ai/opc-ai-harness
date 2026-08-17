@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>dsh-opc-recipes · 一人公司 dsh 插件策展库</title>
+<meta name="description" content="给一人公司 / OPC 主理人挑出来的、亲测装通过并记下真实坑的 dsh 插件清单。开源下来不一定好用，我替你先踩坑。" />
+<style>
+  :root{
+    --bg:#0b0e14; --bg2:#11151f; --card:#161b27; --line:#232a3a;
+    --text:#e6e9f0; --muted:#9aa3b8; --faint:#6b7385;
+    --accent:#5b8cff; --accent2:#37e0c8; --warn:#ffb454; --bad:#ff6b6b; --good:#3ddc97;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:radial-gradient(1200px 600px at 70% -10%, #16203a 0%, var(--bg) 55%) fixed, var(--bg);
+    color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header.nav{
+    position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);
+    background:rgba(11,14,20,.72);border-bottom:1px solid var(--line);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-weight:700;letter-spacing:.3px}
+  .brand small{color:var(--faint);font-weight:400;margin-left:8px;font-size:12px}
+  .nav a.cta{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06121f;
+    padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px;
+  }
+  .hero{padding:74px 0 54px;text-align:center}
+  .hero .tag{
+    display:inline-block;border:1px solid var(--line);color:var(--muted);
+    padding:5px 14px;border-radius:999px;font-size:13px;margin-bottom:22px;
+  }
+  .hero h1{font-size:clamp(30px,6vw,52px);line-height:1.15;font-weight:800;letter-spacing:-.5px}
+  .hero h1 .hl{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .slogan{font-size:clamp(17px,3vw,22px);color:var(--text);margin-top:18px;font-weight:600}
+  .hero .sub{color:var(--muted);margin-top:12px;font-size:15px}
+  .hero .by{color:var(--faint);margin-top:10px;font-size:13px}
+  .btns{margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    padding:12px 22px;border-radius:12px;font-weight:700;font-size:15px;border:1px solid var(--line);
+  }
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06121f;border:none}
+  .btn.ghost{color:var(--text)}
+  section{padding:48px 0;border-top:1px solid var(--line)}
+  h2{font-size:26px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px}
+  h2 .k{color:var(--accent)}
+  .lead{color:var(--muted);margin-bottom:24px;max-width:760px}
+  .creed{
+    margin:22px 0 0;padding:18px 20px;border-left:3px solid var(--accent2);
+    background:var(--bg2);border-radius:0 12px 12px 0;color:var(--text);font-weight:600;
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .box h3{font-size:17px;margin-bottom:10px}
+  .box.yes h3{color:var(--good)} .box.no h3{color:var(--bad)}
+  .box ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .box li{color:var(--muted);font-size:14.5px;padding-left:18px;position:relative}
+  .box li::before{content:"›";position:absolute;left:0;color:var(--faint)}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .pc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px}
+  .pc .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .pc .name{font-weight:700;font-size:16px}
+  .pc .ver{color:var(--faint);font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .pc .fn{color:var(--text);font-size:14.5px}
+  .pc .use{color:var(--muted);font-size:14px}
+  .badge{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .b-ok{background:rgba(61,220,151,.14);color:var(--good);border:1px solid rgba(61,220,151,.3)}
+  .b-warn{background:rgba(255,180,84,.14);color:var(--warn);border:1px solid rgba(255,180,84,.3)}
+  .b-no{background:rgba(255,107,107,.14);color:var(--bad);border:1px solid rgba(255,107,107,.3)}
+  pre{background:#0a0d14;border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow:auto;color:#cdd6e8;font-size:13px;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.6}
+  .pit{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+  .pit .n{color:var(--accent);font-weight:800;font-family:ui-monospace,monospace}
+  .pit .t{color:var(--muted);font-size:14px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:14px}
+  .faces{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .face{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .face .ic{font-size:22px} .face h3{font-size:16px;margin:8px 0 6px} .face p{color:var(--muted);font-size:14px}
+  footer{padding:40px 0 60px;color:var(--faint);font-size:13px;text-align:center;border-top:1px solid var(--line)}
+  footer a{color:var(--muted)}
+  @media(max-width:680px){
+    .grid2,.cards,.faces{grid-template-columns:1fr}
+    section{padding:38px 0}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="brand">dsh-opc-recipes <small>一人公司 dsh 插件策展库</small></div>
+    <a class="cta" href="https://github.com/" target="_blank" rel="noopener">GitHub 仓库</a>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <span class="tag">OPC · 一人公司 · AI 生产力</span>
+  <h1>开源下来<span class="hl">不一定好用</span><br/>我替你先踩坑</h1>
+  <div class="slogan">给一人公司 / OPC 主理人挑出来的 dsh 插件清单</div>
+  <div class="sub">不是壳、不是黄页、不是通用市场——每个都我亲测装通过，并记下真实坑。你照着装，少走弯路。</div>
+  <div class="by">谦川 · AI宇宙狂想家 · 枢台出品</div>
+  <div class="btns">
+    <a class="btn primary" href="#plugins">看已亲测插件</a>
+    <a class="btn ghost" href="#why">为什么是现在</a>
+  </div>
+</div>
+
+<section id="why" class="wrap">
+  <h2>为什么是<span class="k">现在</span></h2>
+  <p class="lead">商业环境正在剧烈重构：一人公司 / 小团队会越来越依赖 AI 生产力，去扛原本需要三五个人才能做的活。</p>
+  <div class="box" style="background:var(--bg2)">
+    <p style="color:var(--muted);font-size:15px">这不是赌某个工具的红火，而是押一条长期曲线——当人力贵、试错频、身兼多职成为常态，能把「本要自己磨但没空做的 grind」交给 AI 的人，才有弹性产能。</p>
+    <p style="color:var(--muted);font-size:15px;margin-top:10px">dsh（及同类「一切皆插件」的 harness）只是当前最顺手的载体。趋势没改，它就不过时；它哪天被更好的取代，策展的判断力仍在。</p>
+  </div>
+  <div class="creed">热点皆过客，道是归处——本库策展的「道」，是 OPC 主理人怎么用 AI 插件把产能撑起来。</div>
+</section>
+
+<section id="what" class="wrap">
+  <h2>它<span class="k">是</span>什么 / 不是什么</h2>
+  <div class="grid2">
+    <div class="box yes">
+      <h3>✅ 是</h3>
+      <ul>
+        <li>按 OPC 主理人真实使用场景分类的 dsh 插件策展</li>
+        <li>每个都我亲测 <code>dsh plugin add</code> 装通过，附真实坑</li>
+        <li>带场景、带批注、带「适合谁」的精选，不是罗列</li>
+      </ul>
+    </div>
+    <div class="box no">
+      <h3>❌ 不是</h3>
+      <ul>
+        <li>桌面壳 / 全量插件黄页 / 通用市场</li>
+        <li>「我替你配好」的付费服务</li>
+        <li>不承诺「获客 / 变现」等结果——工具不创造需求</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:18px">通用中文壳已有人免费做了。我做的是它不屑做的那层：<b style="color:var(--text)">替你先踩安装坑</b>，把「能装起来」变成可复制的步骤。</p>
+</section>
+
+<section id="plugins" class="wrap">
+  <h2>已亲测<span class="k">插件</span></h2>
+  <p class="lead">全部由小p 代跑 <code>dsh plugin --profile web add</code> 实装，<code>dsh plugin --profile web list</code> 复核在册。标注实测版本——配置会随 dsh 版本腐烂，崩了按批注找降级方案。</p>
+  <div class="cards">
+
+    <div class="pc">
+      <div class="top"><span class="name">dsh-at-file</span><span class="ver">@0.6.2</span></div>
+      <div class="fn">@ 引用文件 / 目录进上下文</div>
+      <div class="use">丢文档给 agent，免复制粘贴</div>
+      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m51s 装通</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="top"><span class="name">modlens</span><span class="ver">@3.18.1</span></div>
+      <div class="fn">图片 / OCR / 截图结构化解析</div>
+      <div class="use">贴设计稿截图让 agent 读懂</div>
+      <div class="top"><span class="badge b-ok">✅ 认</span><span class="badge b-warn" style="margin-left:6px">⚠️ Win bin 警告</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="top"><span class="name">dsh-turn-rewind</span><span class="ver">@0.1.1</span></div>
+      <div class="fn">会话状态回退</div>
+      <div class="use">改坏了能退，试错少成本</div>
+      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">8.2s 增量装</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="top"><span class="name">treg</span><span class="ver">@0.11.0</span></div>
+      <div class="fn">2600+ 外部接口目录（按事检索）</div>
+      <div class="use">研究向，需免费 TREG_TOKEN</div>
+      <div class="top"><span class="badge b-warn">⚠️ 存疑 · ingredient</span></div>
+    </div>
+
+  </div>
+  <p class="lead" style="margin-top:16px">详细安装命令、真实坑与谦川批注，见仓库 <a href="https://github.com/" target="_blank" rel="noopener">recipes/</a> 各插件目录。</p>
+</section>
+
+<section id="pits" class="wrap">
+  <h2>真实踩过的<span class="k">坑</span></h2>
+  <p class="lead">这些是所有 <code>dsh plugin add</code> 都会撞的，先读能省一大截。</p>
+
+  <div class="pit">
+    <span class="n">01</span>
+    <div class="t"><b>Windows / WorkBuddy 环境专属</b>：底层 pnpm 的「安全删除」调系统回收站被拦截，报 <code>trash operation aborted</code> 直接挂。<br/>→ 修复：用空 <code>CODEBUDDY_SESSION_ID=</code> 跑安装命令，pnpm 回归原生删除（删的都是自身临时暂存目录，安全）：<br/>
+<pre><code>CODEBUDDY_SESSION_ID= npx -y @deepseek-ai/dsh plugin --profile web add &lt;owner/repo&gt;</code></pre>
+（你本机若不走 WorkBuddy 终端，一般不会撞这个，照常装即可。）
+    </div>
+  </div>
+
+  <div class="pit">
+    <span class="n">02</span>
+    <div class="t"><b>缺 pnpm</b>：Developer Preview 文档没强调，但 <code>dsh plugin add</code> 依赖 pnpm。先 <code>npm i -g pnpm</code>。</div>
+  </div>
+
+  <div class="pit">
+    <span class="n">03</span>
+    <div class="t"><b>GitHub HEAD 偶发 ECONNRESET / ETIMEDOUT</b>：网络抖动，pnpm 自动重试，不用管。</div>
+  </div>
+
+  <div class="pit">
+    <span class="n">04</span>
+    <div class="t"><b>首装 compose 重</b>：首次拉全量 profile 依赖可能 1–3 分钟，别当卡死。</div>
+  </div>
+</section>
+
+<section id="system" class="wrap">
+  <h2>谦川<span class="k">批注</span>体系</h2>
+  <p class="lead">买手店不是黄页：我替你筛过、踩过坑、装通过，你才看不到垃圾。</p>
+  <div class="legend">
+    <span><span class="badge b-ok">✅ 认</span> 实测好用，推荐</span>
+    <span><span class="badge b-warn">⚠️ 存疑</span> 部分场景可用 / 有门槛</span>
+    <span><span class="badge b-no">❌ 否</span> 不推荐 / 有坑</span>
+    <span><span class="badge" style="background:var(--bg2);color:var(--faint);border:1px solid var(--line)">🕒 待亲测</span> 仅情报占位，不背书</span>
+  </div>
+</section>
+
+<section id="faces" class="wrap">
+  <h2>门面<span class="k">三张脸</span></h2>
+  <p class="lead">归一个道：枢台 · AI效率搭子。</p>
+  <div class="faces">
+    <div class="face"><div class="ic">🐙</div><h3>GitHub（你在这）</h3><p>技术门面：插件真身 + 试用记录 + 批注</p></div>
+    <div class="face"><div class="ic">📣</div><h3>公众号 / 小红书 / 视频号</h3><p>内容门面：引流，把策展讲给主理人听</p></div>
+    <div class="face"><div class="ic">💬</div><h3>微信</h3><p>私域：信任沉淀</p></div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>dsh 仍为 <b>Developer Preview</b>，官方明说「未来将出现破坏兼容性的变更」——所有插件标注实测版本，配置会随版本腐烂，崩了按批注找降级方案。</p>
+  <p style="margin-top:8px">dsh-opc-recipes · 谦川（AI宇宙狂想家 · 枢台出品）· 热点皆过客，道是归处</p>
+</footer>
+
+</body>
+</html>
