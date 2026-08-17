@@ -111,5 +111,5 @@ dsh 仍是 **Developer Preview**，官方明说「未来将出现破坏兼容性
 ## 门面三张脸（归一个道：枢台 · AI效率搭子）
 
 - **GitHub（你在这）** = 技术门面：插件真身 + 试用记录 + 批注
-- **公众号 / 小红书 / 视频号** = 内容门面：引流。小红书主页 https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072（公众号 / 视频号待补）
+- **公众号 / 小红书 / 视频号** = 内容门面：引流。小红书主页 https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072
 - **微信** = 私域：信任沉淀。微信号 **sheshouzuo3366**（有问题直接加，备注「OPC 策展」）
