@@ -106,7 +106,7 @@
 
 <section id="plugins" class="wrap">
   <h2>已亲测<span class="k">插件</span></h2>
-  <p class="lead">全部实装复核，标注实测版本。<span class="badge b-ok">✅ 认</span> 实测好用 · <span class="badge b-warn">⚠️ 存疑</span> 有门槛 · <span class="badge b-no">❌ 否</span> 不推荐。</p>
+  <p class="lead">全部实装复核，标注实测版本。<span class="badge b-ok">✅ 认</span> 实测好用 · <span class="badge b-warn">⚠️ 存疑</span> 有门槛 · <span class="badge b-no">❌ 否</span> 不推荐 · <span class="badge b-warn">🕒 待真装</span> 仅理论审查。</p>
   <div class="cards">
 
     <div class="pc">
@@ -172,6 +172,13 @@
       <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m34s 装通 · 零编译</span></div>
     </div>
 
+    <div class="pc">
+      <div class="top"><span class="name">dsh-deep-research</span><span class="ver">@0.1.x</span></div>
+      <div class="fn">自适应深度研究闭环（多源自研）</div>
+      <div class="use">竞品 / 市场调研，比 deepread 深一层</div>
+      <div class="top"><span class="badge b-warn">🕒 待真装</span><span style="color:var(--faint);font-size:12px">理论审查 · 待谦川回填</span></div>
+    </div>
+
   </div>
   <p class="lead" style="margin-top:16px">每篇带交付的深度评测（含劝退阈值 + 6 条通用安装坑）在仓库 <a href="https://github.com/qianchuan-ai/opc-ai-harness" target="_blank" rel="noopener">reviews/</a>；按场景的安装命令在 <a href="https://github.com/qianchuan-ai/opc-ai-harness" target="_blank" rel="noopener">recipes/</a>。</p>
 </section>
@@ -201,13 +208,59 @@
     <span class="n">04</span>
     <div class="t"><b>首装 compose 重</b>：首次拉全量 profile 依赖可能 1–3 分钟，别当卡死。</div>
   </div>
+
+  <div class="pit">
+    <span class="n">05</span>
+    <div class="t"><b>私有 / 需鉴权仓库匿名装不上</b>：报 <code>ERR_PNPM_GIT_RESOLVE_FAILED ... could not read Username</code>。普通主理人直接放弃该仓库版，找原生能力或预编译版替代（参考 dsh-plan-execute：双模型路由用 dsh 原生切换即可）。</div>
+  </div>
+
+  <div class="pit">
+    <span class="n">06</span>
+    <div class="t"><b>npm 缓存锁（沙箱特性）</b>：安装中途失败后，再装任何插件都 <code>EPERM ... _cacache ...</code>。这是 WorkBuddy 沙箱的进程级独占锁 artifact，不是插件缺陷；干净机器无此问题。遇上了换本地缓存 <code>npm_config_cache=&lt;工作区&gt;/.npmcache</code> 绕开。</div>
+  </div>
+</section>
+
+<section id="tools" class="wrap">
+  <h2>配套<span class="k">工具</span></h2>
+  <p class="lead">不是 dsh 插件，但属 OPC 主理人 AI 生产力拼图。都还没真测，标注状态，<b>不背书</b>。</p>
+  <div class="cards">
+
+    <div class="pc">
+      <div class="top"><span class="name">矩媒 MatrixMedia</span><span class="ver">GPL-2.0</span></div>
+      <div class="fn">多平台视频矩阵发布（抖音/快手/B站/小红书/视频号）</div>
+      <div class="use">原生 MCP Server，一次铺多平台分发</div>
+      <div class="top"><span class="badge b-warn">⚠️ ToS 灰区</span><span style="color:var(--faint);font-size:12px">Puppeteer 模拟登录踩平台规则</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="top"><span class="name">agency-agents 角色库</span><span class="ver">MIT</span></div>
+      <div class="fn">232 个结构化 AI 角色（中文版 agency-agents-zh）</div>
+      <div class="use">配 dsh-agent-teams 当角色定义层</div>
+      <div class="top"><span class="badge b-warn">🕒 待验证</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="top"><span class="name">srt-whiteboard-animation</span><span class="ver">MIT</span></div>
+      <div class="fn">SRT 字幕 → 白板手绘动画短视频</div>
+      <div class="use">知识类口播转不露脸白板视频</div>
+      <div class="top"><span class="badge b-warn">🕒 待验证</span><span style="color:var(--faint);font-size:12px">强依赖先有线稿</span></div>
+    </div>
+
+    <div class="pc">
+      <div class="top"><span class="name">yichen-x-slicer</span><span class="ver">Skill</span></div>
+      <div class="fn">X 推文一键切片成视频</div>
+      <div class="use">自己的 X 内容多平台分发</div>
+      <div class="top"><span class="badge b-warn">⚠️ 授权红线</span><span style="color:var(--faint);font-size:12px">只切自己授权的</span></div>
+    </div>
+
+  </div>
 </section>
 
 <section id="faces" class="wrap">
   <h2>去哪找<span class="k">谦川</span></h2>
   <div class="faces">
     <div class="face"><div class="ic">🐙</div><h3>GitHub <span class="badge" style="background:var(--bg2);color:var(--faint);border:1px solid var(--line);font-size:11px">你在这</span></h3><p>证据库：每个插件都真装过，坑和上手命令全写在这</p></div>
-    <div class="face"><div class="ic">📣</div><h3>公众号 · 小红书 · 视频号</h3><p>内容门面：避坑笔记持续更新</p><div class="social"><a href="https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072" target="_blank" rel="noopener">小红书主页 ↗</a></div></div>
+    <div class="face"><div class="ic">📣</div><h3>公众号 · 小红书 · 视频号 · X</h3><p>内容门面：避坑笔记持续更新</p><div class="social"><a href="https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072" target="_blank" rel="noopener">小红书主页 ↗</a><a href="https://x.com/caelus2x" target="_blank" rel="noopener">X @caelus2x ↗</a></div></div>
     <div class="face"><div class="ic">💬</div><h3>微信</h3><p>私域：有问题直接找谦川</p><div class="wxid" onclick="navigator.clipboard.writeText('sheshouzuo3366').then(()=>{var t=this.querySelector('.cp');var o=t.textContent;t.textContent='已复制';setTimeout(()=>t.textContent=o,1500)})"><span>sheshouzuo3366</span><span class="cp">点击复制</span></div></div>
   </div>
 </section>

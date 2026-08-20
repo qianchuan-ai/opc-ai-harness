@@ -41,8 +41,9 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [dsh-library](reviews/dsh-library.md) | 本地优先文档知识库（RAG） | 本地 KB、数据不出本机 | ⚠️ 坑已定位（allowBuilds） |
 | [dsh-agent-teams](reviews/dsh-agent-teams.md) | 多 Agent 协作 / 角色化团队 | 一人扛多活，把任务分派给多个 agent | ✅ 认（1m9s 装通，零编译） |
 | [dsh-memory-evolve](reviews/dsh-memory-evolve.md) | 跨会话长记忆 + 自我进化 | 反复协作不重复交代，AI 越用越懂你 | ✅ 认（1m34s 装通，零编译） |
+| [dsh-deep-research](reviews/dsh-deep-research.md) | 自适应深度研究闭环（多源自研） | 竞品/市场调研，比 deepread 深一层 | 🕒 待真装（理论审查） |
 
-> 全部于 2026-08-17 由小p 代跑 `dsh plugin --profile web add` 实装，`dsh plugin --profile web list` 复核在册。
+> 前 9 个于 2026-08-17 由小p 代跑 `dsh plugin --profile web add` 实装，`dsh plugin --profile web list` 复核在册。dsh-deep-research 仅源码审查，待谦川真装回填。
 
 ---
 
@@ -57,6 +58,7 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [dsh-library](reviews/dsh-library.md) | ⚠️ 坑已定位 | 编译型插件必加 `allowBuilds`；本地 KB 零模型下载首选 |
 | [dsh-agent-teams](reviews/dsh-agent-teams.md) | ✅ 装成 | 多 Agent 角色化协作编排，一人扛多活把任务分派出去；纯 Cordis 零编译，1m9s 装通 |
 | [dsh-memory-evolve](reviews/dsh-memory-evolve.md) | ✅ 装成 | 跨会话长记忆 + 自我进化，本地轻量；反复协作不重复交代，AI 越用越懂你 |
+| [dsh-deep-research](reviews/dsh-deep-research.md) | 🕒 理论审查 | 控制论+信息论自适应研究闭环，配置复杂、token 贵；先吃透 deepread 再上 |
 | [通用安装坑](reviews/通用安装坑.md) | — | 6 条跨插件真实坑 + 安装黄金命令（付费排障手册原材料） |
 
 ---
@@ -77,8 +79,23 @@ CODEBUDDY_SESSION_ID= npx -y @deepseek-ai/dsh plugin --profile web add <owner/re
 - **缺 pnpm**：Developer Preview 文档没强调，但 `dsh plugin add` 依赖 pnpm。先 `npm i -g pnpm`。
 - **GitHub HEAD 偶发 ECONNRESET / ETIMEDOUT**：网络抖动，pnpm 自动重试，不用管。
 - **首装 compose 重**：首次拉全量 profile 依赖可能 1–3 分钟，别当卡死。
+- **私有 / 需鉴权仓库匿名装不上**：报 `ERR_PNPM_GIT_RESOLVE_FAILED ... could not read Username`。普通主理人直接放弃该仓库版，找原生能力或预编译版替代（参考 dsh-plan-execute：双模型路由用 dsh 原生切换即可）。
+- **npm 缓存锁（沙箱特性）**：安装中途失败后，再装任何插件都 `EPERM ... _cacache ...`。这是 WorkBuddy 沙箱的进程级独占锁 artifact，不是插件缺陷；干净机器无此问题。遇上了换本地缓存 `npm_config_cache=<工作区>/.npmcache` 绕开。
 
-> 更全的 6 条跨插件坑（含 `allowBuilds`、`私有仓库装不上`、本沙箱 `npm 缓存锁`）与**安装黄金命令**，见 [reviews/通用安装坑.md](reviews/通用安装坑.md)。
+> 更全的 6 条跨插件坑与**安装黄金命令**，见 [reviews/通用安装坑.md](reviews/通用安装坑.md)。
+
+---
+
+## 配套工具 / OPC 生产力拼图
+
+不是 dsh 插件，但和「一人公司主理人怎么用 AI 扛多活」相关。都还没真测，标注状态，**不背书**。
+
+| 工具 | 是什么 | 对 OPC 主理人 | 状态 / 护栏 |
+|---|---|---|---|
+| [矩媒 MatrixMedia](https://github.com/hanliang97/MatrixMedia) | 多平台视频矩阵发布（抖音/快手/B站/小红书/视频号），原生 MCP Server | 一次铺多平台分发 | ⚠️ **ToS 灰区**：Puppeteer 模拟登录踩平台规则，慎用于商业账号 |
+| [agency-agents 角色库](https://github.com/msitarzewski/agency-agents) | 232 个结构化 AI 角色（中文版 agency-agents-zh） | 配 dsh-agent-teams 当角色定义层 | 🕒 待验证 |
+| [srt-whiteboard-animation](https://github.com/geeklee/srt-whiteboard-animation) | SRT 字幕 → 白板手绘动画短视频 | 知识类口播转不露脸白板视频 | 🕒 待验证（强依赖先有线稿） |
+| [yichen-x-slicer](https://github.com/gengdaJ/yichen-x-slicer) | X 推文一键切片成视频 | 自己的 X 内容多平台分发 | ⚠️ **授权红线**：只切自己授权的，别扒别人爆款 |
 
 ---
 
@@ -111,5 +128,5 @@ dsh 仍是 **Developer Preview**，官方明说「未来将出现破坏兼容性
 ## 门面三张脸（归一个道：枢台 · AI效率搭子）
 
 - **GitHub（你在这）** = 技术门面：插件真身 + 试用记录 + 批注
-- **公众号 / 小红书 / 视频号** = 内容门面：引流。小红书主页 https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072
+- **公众号 / 小红书 / 视频号 / X** = 内容门面：引流。小红书主页 https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072 · X https://x.com/caelus2x
 - **微信** = 私域：信任沉淀。微信号 **sheshouzuo3366**（有问题直接加，备注「OPC 策展」）
