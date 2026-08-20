@@ -41,9 +41,9 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [dsh-library](reviews/dsh-library.md) | 本地优先文档知识库（RAG） | 本地 KB、数据不出本机 | ⚠️ 坑已定位（allowBuilds） |
 | [dsh-agent-teams](reviews/dsh-agent-teams.md) | 多 Agent 协作 / 角色化团队 | 一人扛多活，把任务分派给多个 agent | ✅ 认（1m9s 装通，零编译） |
 | [dsh-memory-evolve](reviews/dsh-memory-evolve.md) | 跨会话长记忆 + 自我进化 | 反复协作不重复交代，AI 越用越懂你 | ✅ 认（1m34s 装通，零编译） |
-| [dsh-deep-research](reviews/dsh-deep-research.md) | 自适应深度研究闭环（多源自研） | 竞品/市场调研，比 deepread 深一层 | 🕒 待真装（理论审查） |
+| [dsh-deep-research](reviews/dsh-deep-research.md) | 自适应深度研究闭环（多源自研） | 竞品/市场调研，比 deepread 深一层 | ⚠️ web 不可用（装通但缺 workflow 引擎→pending） |
 
-> 前 9 个于 2026-08-17 由小p 代跑 `dsh plugin --profile web add` 实装，`dsh plugin --profile web list` 复核在册。dsh-deep-research 仅源码审查，待谦川真装回填。
+> 前 9 个于 2026-08-17 由小p 代跑 `dsh plugin --profile web add` 实装，`dsh plugin --profile web list` 复核在册。dsh-deep-research 于 2026-08-20 真装实测：pnpm 装包成功，但 web profile 缺官方 workflow 引擎，Loader 必然 pending、工具注入不了——web 用户先别上，先用 dsh-deepread。
 
 ---
 
@@ -58,18 +58,18 @@ dsh（及同类"一切皆插件"的 harness）只是当前最顺手的载体。�
 | [dsh-library](reviews/dsh-library.md) | ⚠️ 坑已定位 | 编译型插件必加 `allowBuilds`；本地 KB 零模型下载首选 |
 | [dsh-agent-teams](reviews/dsh-agent-teams.md) | ✅ 装成 | 多 Agent 角色化协作编排，一人扛多活把任务分派出去；纯 Cordis 零编译，1m9s 装通 |
 | [dsh-memory-evolve](reviews/dsh-memory-evolve.md) | ✅ 装成 | 跨会话长记忆 + 自我进化，本地轻量；反复协作不重复交代，AI 越用越懂你 |
-| [dsh-deep-research](reviews/dsh-deep-research.md) | 🕒 理论审查 | 控制论+信息论自适应研究闭环，配置复杂、token 贵；先吃透 deepread 再上 |
+| [dsh-deep-research](reviews/dsh-deep-research.md) | ⚠️ 装通但 web 不可用 | 控制论+信息论自适应研究闭环；web profile 缺 workflow 引擎→Loader pending，需切 headless/tui 才能用 |
 | [通用安装坑](reviews/通用安装坑.md) | — | 6 条跨插件真实坑 + 安装黄金命令（付费排障手册原材料） |
 
 ---
 
 ## 通用坑（所有 `dsh plugin add` 都会撞，先读）
 
-**Windows / WorkBuddy 环境专属**：`dsh plugin add` 底层转发给 pnpm，pnpm 的「安全删除」会调系统回收站。在 WorkBuddy 沙箱里该调用被拦截，报 `trash operation aborted` 直接挂掉。
-→ **修复**：用空 `CODEBUDDY_SESSION_ID=` 跑安装命令，shim 即 early-return，pnpm 回归原生删除（删的都是它自己的临时暂存目录，安全）：
+**Windows / WorkBuddy 环境专属**：`dsh plugin add` 底层转发给 pnpm，pnpm 的「安全删除」会调系统回收站。在 WorkBuddy 沙箱里该调用被拦截，报 `SAFE_DELETE_BULK_GUARD_ERROR`（CODEBUDDY_SESSION_ID is not set）直接挂掉。
+→ **修复**：给 `CODEBUDDY_SESSION_ID` 一个**非空值**（如 `wb`）跑安装命令，shim 即 early-return，pnpm 回归原生删除（删的都是它自己的临时暂存目录，安全）。空值 `CODEBUDDY_SESSION_ID=` 在部分 dsh 版本下仍被判 "not set"，务必给非空值：
 
 ```bash
-CODEBUDDY_SESSION_ID= npx -y @deepseek-ai/dsh plugin --profile web add <owner/repo>
+CODEBUDDY_SESSION_ID=wb npx -y @deepseek-ai/dsh plugin --profile web add <owner/repo>
 ```
 
 （你本机若不走 WorkBuddy 终端，一般不会撞这个，照常装即可。）
