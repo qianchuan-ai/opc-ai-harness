@@ -78,9 +78,30 @@
   .face .social a:hover{background:rgba(91,140,255,.2);text-decoration:none}
   footer{padding:34px 0 56px;color:var(--faint);font-size:13px;text-align:center;border-top:1px solid var(--line)}
   footer a{color:var(--muted)}
+
+  /* 新增：场景对照表 */
+  .scene-table{width:100%;border-collapse:collapse;margin-top:16px}
+  .scene-table th,.scene-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line)}
+  .scene-table th{color:var(--muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .scene-table td{font-size:14px}
+  .scene-table tr:hover td{background:rgba(91,140,255,.05)}
+  .scene-table .plugin-link{color:var(--accent);font-weight:600}
+
+  /* 新增：精选插件高亮 */
+  .pc.featured{border-color:var(--accent);background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(55,224,200,.05))}
+  .pc.featured .name{color:var(--accent)}
+
+  /* 新增：同类推荐区 */
+  .similar{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:24px}
+  .similar h3{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--muted)}
+  .similar ul{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .similar li{font-size:13px;color:var(--text)}
+  .similar li::before{content:"→ ";color:var(--accent)}
+
   @media(max-width:680px){
     .cards,.faces{grid-template-columns:1fr}
     section{padding:34px 0}
+    .similar ul{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -101,81 +122,145 @@
   <div class="by">谦川 · AI宇宙狂想家 · 枢台出品</div>
   <div class="btns">
     <a class="btn primary" href="#plugins">看已亲测插件</a>
+    <a class="btn" href="#scenes">按场景选插件</a>
   </div>
 </div>
+
+<section id="scenes" class="wrap">
+  <h2>按<span class="k">场景</span>选插件</h2>
+  <p class="lead">不同任务对应不同插件，先定位你的场景，再选工具。</p>
+
+  <table class="scene-table">
+    <thead>
+      <tr><th>你的场景</th><th>推荐插件</th><th>状态</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>丢文档/链接给 agent，让它读透再回答</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-deepread.md" class="plugin-link">dsh-deepread</a></td>
+        <td><span class="badge b-ok">✅ 8.3s 装通</span></td>
+      </tr>
+      <tr>
+        <td>本地知识库，数据不出本机</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-library.md" class="plugin-link">dsh-library</a></td>
+        <td><span class="badge b-warn">⚠️ 需 allowBuilds</span></td>
+      </tr>
+      <tr>
+        <td>做深度调研/竞品分析/多源综合</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-deep-research.md" class="plugin-link">dsh-deep-research</a></td>
+        <td><span class="badge b-warn">⚠️ web 不可用（需 headless/tui）</span></td>
+      </tr>
+      <tr>
+        <td>把任务分派给多个 agent 并行</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-agent-teams.md" class="plugin-link">dsh-agent-teams</a></td>
+        <td><span class="badge b-ok">✅ 1m9s 装通</span></td>
+      </tr>
+      <tr>
+        <td>AI 越用越懂你，跨会话复用上下文</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-memory-evolve.md" class="plugin-link">dsh-memory-evolve</a></td>
+        <td><span class="badge b-ok">✅ 1m34s 装通</span></td>
+      </tr>
+      <tr>
+        <td>改坏了能退回上一步</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/" class="plugin-link">dsh-turn-rewind</a></td>
+        <td><span class="badge b-ok">✅ 8.2s 装通</span></td>
+      </tr>
+      <tr>
+        <td>图片/截图结构化解析</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/modlens.md" class="plugin-link">modlens</a></td>
+        <td><span class="badge b-ok">✅ Win 有 bin 警告</span></td>
+      </tr>
+      <tr>
+        <td>外部接口目录检索（研究向）</td>
+        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/treg.md" class="plugin-link">treg</a></td>
+        <td><span class="badge b-warn">⚠️ 需免费 TREG_TOKEN</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="similar">
+    <h3>同类插件推荐（同场景备选）</h3>
+    <ul>
+      <li>内容精读 → 先用 <strong>dsh-deepread</strong>，复杂研究再升级 deep-research</li>
+      <li>多 Agent 协作 → <strong>dsh-agent-teams</strong> + agency-agents 角色库（待测）</li>
+      <li>本地知识库 → <strong>dsh-library</strong>（需 allowBuilds 白名单）</li>
+      <li>省 Token 写作 → 装 Ponytail 在 Claude Code/Cursor 里（非 dsh 插件）</li>
+    </ul>
+  </div>
+</section>
 
 <section id="plugins" class="wrap">
   <h2>已亲测<span class="k">插件</span></h2>
   <p class="lead">全部实装复核，标注实测版本。<span class="badge b-ok">✅ 认</span> 实测好用 · <span class="badge b-warn">⚠️ 存疑</span> 有门槛 · <span class="badge b-no">❌ 否</span> 不推荐 · <span class="badge b-warn">🕒 待真装</span> 仅理论审查。</p>
   <div class="cards">
 
-    <div class="pc">
+    <div class="pc featured">
       <div class="top"><span class="name">dsh-at-file</span><span class="ver">@0.6.2</span></div>
       <div class="fn">@ 引用文件 / 目录进上下文</div>
-      <div class="use">丢文档给 agent，免复制粘贴</div>
+      <div class="use">丢文档给 agent，免复制粘贴。写评论、回消息前先把素材喂进去。</div>
       <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m51s 装通</span></div>
+    </div>
+
+    <div class="pc featured">
+      <div class="top"><span class="name">dsh-deepread</span><span class="ver">latest</span></div>
+      <div class="fn">网页 / 文件 / 文本精读（内容抓取合规源）</div>
+      <div class="use">内容研究、竞品拆解、长文归纳。替代小红书/公众号抓取的合规方案——不碰平台 ToS。</div>
+      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">8.3s 装通 · 零编译</span></div>
     </div>
 
     <div class="pc">
       <div class="top"><span class="name">modlens</span><span class="ver">@3.18.1</span></div>
       <div class="fn">图片 / OCR / 截图结构化解析</div>
-      <div class="use">贴设计稿截图让 agent 读懂</div>
+      <div class="use">贴设计稿截图让 agent 读懂，做 UI 评审、竞品界面分析时省时间。</div>
       <div class="top"><span class="badge b-ok">✅ 认</span><span class="badge b-warn" style="margin-left:6px">⚠️ Win bin 警告</span></div>
     </div>
 
     <div class="pc">
       <div class="top"><span class="name">dsh-turn-rewind</span><span class="ver">@0.1.1</span></div>
       <div class="fn">会话状态回退</div>
-      <div class="use">改坏了能退，试错少成本</div>
+      <div class="use">改坏了能退，试错少成本。配合 deepread 用——先读透再改。</div>
       <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">8.2s 增量装</span></div>
     </div>
 
     <div class="pc">
       <div class="top"><span class="name">treg</span><span class="ver">@0.11.0</span></div>
       <div class="fn">2600+ 外部接口目录（按事检索）</div>
-      <div class="use">研究向，需免费 TREG_TOKEN</div>
+      <div class="use">研究向，需免费 TREG_TOKEN。找 API、接第三方服务时用得上。</div>
       <div class="top"><span class="badge b-warn">⚠️ 存疑 · ingredient</span></div>
-    </div>
-
-    <div class="pc">
-      <div class="top"><span class="name">dsh-deepread</span><span class="ver">latest</span></div>
-      <div class="fn">网页 / 文件 / 文本精读（内容抓取合规源）</div>
-      <div class="use">内容研究、竞品拆解、长文归纳</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">8.3s 装通 · 零编译</span></div>
     </div>
 
     <div class="pc">
       <div class="top"><span class="name">dsh-plan-execute</span><span class="ver">—</span></div>
       <div class="fn">规划/执行双模型路由（省 API）</div>
-      <div class="use">控成本——但 dsh 原生就支持，无需装</div>
+      <div class="use">控成本——但 dsh 原生就支持，无需装。别重复造轮子。</div>
       <div class="top"><span class="badge b-no">❌ 否 · 劝退</span><span style="color:var(--faint);font-size:12px">装失败 + 原生更稳</span></div>
     </div>
 
     <div class="pc">
       <div class="top"><span class="name">dsh-library</span><span class="ver">@0.1.0</span></div>
       <div class="fn">本地优先文档知识库（RAG）</div>
-      <div class="use">本地 KB、数据不出本机</div>
+      <div class="use">本地 KB、数据不出本机。适合敏感资料、不想上传云端的场景。</div>
       <div class="top"><span class="badge b-warn">⚠️ 坑已定位</span><span style="color:var(--faint);font-size:12px">需 allowBuilds</span></div>
     </div>
 
-    <div class="pc">
+    <div class="pc featured">
       <div class="top"><span class="name">dsh-agent-teams</span><span class="ver">@0.1.6</span></div>
       <div class="fn">多 Agent 协作 / 角色化团队</div>
-      <div class="use">一人扛多活，把任务分派给多个 agent</div>
+      <div class="use">一人扛多活，把任务分派给多个 agent。配合 agency-agents 角色库用效果更佳。</div>
       <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m9s 装通 · 零编译</span></div>
     </div>
 
-    <div class="pc">
+    <div class="pc featured">
       <div class="top"><span class="name">dsh-memory-evolve</span><span class="ver">@0.1.0</span></div>
       <div class="fn">跨会话长记忆 + 自我进化</div>
-      <div class="use">反复协作不重复交代，AI 越用越懂你</div>
+      <div class="use">反复协作不重复交代，AI 越用越懂你。适合长期合作的主理人。</div>
       <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m34s 装通 · 零编译</span></div>
     </div>
 
     <div class="pc">
       <div class="top"><span class="name">dsh-deep-research</span><span class="ver">@0.1.0</span></div>
       <div class="fn">自适应深度研究闭环（多源自研）</div>
-      <div class="use">竞品 / 市场调研，比 deepread 深一层</div>
+      <div class="use">竞品/市场调研，比 deepread 深一层。复杂主题自动扩展轮次，边际增益验证。</div>
       <div class="top"><span class="badge b-warn">⚠️ web 不可用</span><span style="color:var(--faint);font-size:12px">装通但缺 workflow 引擎→Loader pending</span></div>
     </div>
 
@@ -189,8 +274,8 @@
 
   <div class="pit">
     <span class="n">01</span>
-    <div class="t"><b>Windows / WorkBuddy 环境</b>：底层 pnpm 安全删除调回收站被拦截，报 <code>trash operation aborted</code>。<br/>→ 修复：空 <code>CODEBUDDY_SESSION_ID=</code> 跑安装命令，pnpm 回归原生删除：<br/>
-<pre><code>CODEBUDDY_SESSION_ID= npx -y @deepseek-ai/dsh plugin --profile web add &lt;owner/repo&gt;</code></pre>
+    <div class="t"><b>Windows / WorkBuddy 环境</b>：底层 pnpm 安全删除调回收站被拦截，报 <code>SAFE_DELETE_BULK_GUARD_ERROR</code>（CODEBUDDY_SESSION_ID is not set）。<br/>→ 修复：给 <code>CODEBUDDY_SESSION_ID</code> 一个<b>非空值</b>（如 <code>wb</code>），shim 即 early-return：<br/>
+<pre><code>CODEBUDDY_SESSION_ID=wb npx -y @deepseek-ai/dsh plugin --profile web add &lt;owner/repo&gt;</code></pre>
 不走 WorkBuddy 终端的机器一般不会撞这个。</div>
   </div>
 
