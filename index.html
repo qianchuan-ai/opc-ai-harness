@@ -223,12 +223,6 @@
   /* 宣纸底纹：极淡纤维感 */
   body{background-image:radial-gradient(rgba(158,43,37,.022) 1px,transparent 1px);background-size:24px 24px}
   [data-theme="dark"] body{background-image:none}
-  /* 国风·法帖装饰带：竖排书法句 + 闲章，仅国风显示 */
-  .fati{display:flex;justify-content:center;align-items:flex-start;gap:34px;max-width:1120px;margin:34px auto 0;padding:22px 20px;opacity:.5}
-  [data-theme="dark"] .fati,[data-theme="mosaic"] .fati{display:none}
-  .fati-col{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:30px;line-height:1.15;color:#3a3328;letter-spacing:2px;height:130px}
-  .fati-col b{color:var(--accent);font-weight:400;font-family:var(--font-cn)}
-  .fati-seal{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:18px;line-height:1.3;color:#f7f1e3;background:var(--accent);padding:12px 8px;border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.15);letter-spacing:1px;height:130px}
   /* 卡片内·古代法帖落款：仅国风显示，竖排名句 + 朱印落款 */
   .item-fati{display:flex;justify-content:flex-end;align-items:flex-start;gap:14px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);opacity:.62}
   [data-theme="dark"] .item-fati,[data-theme="mosaic"] .item-fati{display:none}
@@ -242,6 +236,13 @@
   .brand .dot{background:linear-gradient(135deg,var(--accent),var(--warn));border-radius:2px}
   .brand b{color:var(--accent);font-family:var(--font-cn);font-size:26px;letter-spacing:2px}
   .nav-cta{background:var(--accent);color:#f7f1e3;border-radius:4px}
+  /* 信息流分页·查看更多 */
+  .load-more{display:block;margin:28px auto 6px;padding:13px 34px;font-family:var(--font-cn);font-size:17px;letter-spacing:3px;color:var(--accent);background:transparent;border:1.5px solid var(--accent);border-radius:6px;cursor:pointer;transition:all .18s}
+  .load-more:hover{background:var(--accent);color:#f7f1e3}
+  .load-more.done{display:none}
+  [data-theme="dark"] .load-more,[data-theme="mosaic"] .load-more{border-color:var(--line);color:var(--ink)}
+  [data-theme="dark"] .load-more:hover,[data-theme="mosaic"] .load-more:hover{background:var(--accent);color:#f7f1e3}
+  .item.batch-hidden{display:none!important}
   [data-theme="dark"] .nav-cta{background:var(--accent2);color:var(--bg)}
   /* curator 导语：宣纸卡 + 朱砂题头 + 书法 */
   .curator{background:linear-gradient(160deg,var(--card),rgba(63,111,79,.05));border:1px solid var(--line)}
@@ -1127,14 +1128,7 @@
 
 </div>
 
-<!-- 国风·法帖装饰带（仅国风主题显示） -->
-<div class="fati" aria-hidden="true">
-  <div class="fati-col"><b>择</b>善而装</div>
-  <div class="fati-col"><b>独</b>立实测</div>
-  <div class="fati-seal">不劝装·只劝退</div>
-  <div class="fati-col"><b>踩</b>过方信</div>
-  <div class="fati-col"><b>信</b>而后荐</div>
-</div>
+<button id="loadMore" class="load-more">查看更多插件实测</button>
 
 <div class="foot">
   © 2026 谦川 · AI宇宙狂想者 · 独立实测 · 数据来源 GitHub dsh-plugin topic + Search API · 收录不代表推荐，安装风险自负
@@ -1207,8 +1201,17 @@ function renderIcons(theme){
     if(btn) btn.textContent = LABEL[theme] || '国风';
     renderIcons(theme);
   }
-  var saved = null;
-  try{ saved = localStorage.getItem('dsh-theme'); }catch(e){}
+  // 双保险：localStorage + cookie 都试，file:// 下 cookie 比 localStorage 更可靠
+  function readTheme(){
+    try{ var l = localStorage.getItem('dsh-theme'); if(ORDER.indexOf(l) >= 0) return l; }catch(e){}
+    try{ var m = document.cookie.match(/(?:^|;\s*)dsh-theme=([^;]+)/); if(m && ORDER.indexOf(m[1]) >= 0) return m[1]; }catch(e){}
+    return null;
+  }
+  function writeTheme(t){
+    try{ localStorage.setItem('dsh-theme', t); }catch(e){}
+    try{ document.cookie = 'dsh-theme=' + t + ';path=/;max-age=' + (365*24*3600); }catch(e){}
+  }
+  var saved = readTheme();
   // 默认马赛克；无 saved 或非法值才回退 mosaic
   apply(ORDER.indexOf(saved) >= 0 ? saved : 'mosaic');
   window.toggleTheme = function(){
@@ -1216,8 +1219,37 @@ function renderIcons(theme){
     var cur = (curAttr && ORDER.indexOf(curAttr) >= 0) ? curAttr : 'guofeng';
     var next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
     apply(next);
-    try{ localStorage.setItem('dsh-theme', next); }catch(e){}
+    writeTheme(next);
   };
+})();
+
+// 信息流分页：默认每批显示 BATCH 张，点"查看更多"追加下一批
+(function(){
+  var BATCH = 6;
+  var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
+  var btn = document.getElementById('loadMore');
+  if(!items.length || !btn) return;
+  var shown = 0;
+  function render(){
+    items.forEach(function(el, i){
+      if(i < shown){ el.classList.remove('batch-hidden'); }
+      else { el.classList.add('batch-hidden'); }
+    });
+    if(shown >= items.length){
+      btn.classList.add('done');
+    } else {
+      btn.classList.remove('done');
+      var left = items.length - shown;
+      btn.textContent = '查看更多插件实测（剩 ' + left + ' 个）';
+    }
+  }
+  function loadMore(){
+    shown = Math.min(shown + BATCH, items.length);
+    render();
+  }
+  btn.addEventListener('click', loadMore);
+  shown = Math.min(BATCH, items.length);
+  render();
 })();
 
 // 一键复制安装命令
