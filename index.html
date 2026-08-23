@@ -234,6 +234,57 @@
   /* 马赛克：亮字 + 像素硬印 */
   [data-theme="mosaic"] .item-philosophy .ip-col{color:#e8e8f0;letter-spacing:1px}
   [data-theme="mosaic"] .item-philosophy .ip-seal{color:#0d0d12;background:var(--accent);border-radius:0}
+
+  /* ===== 置顶深度评测·大图轮播 ===== */
+  .featured{margin:6px 0 22px;padding:0;border-radius:8px;overflow:hidden;background:var(--card);border:1px solid var(--line);box-shadow:0 2px 0 var(--line)}
+  .featured-hd{display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px dashed var(--line);font-family:var(--font-cn);font-size:13px;color:var(--muted);letter-spacing:1px}
+  .featured-hd .fh-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:4px;background:var(--accent);color:#f7f1e3;font-size:13px;font-weight:700}
+  .featured-hd .fh-tit{color:var(--text);font-weight:700}
+  .featured-hd .fh-sub{margin-left:auto;font-size:11px;color:var(--muted)}
+  .featured-track{position:relative;overflow:hidden}
+  .featured-slides{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1);will-change:transform}
+  .featured-slide{flex:0 0 100%;min-width:0;display:grid;grid-template-columns:1.05fr 1fr;gap:0;cursor:pointer;text-decoration:none;color:inherit}
+  .featured-cover{position:relative;aspect-ratio:5/3;background:linear-gradient(135deg,var(--accent-soft,rgba(193,83,70,.10)),var(--card));overflow:hidden}
+  .featured-cover svg, .featured-cover .fc-fallback{position:absolute;inset:0;width:100%;height:100%}
+  .featured-cover .fc-tag{position:absolute;left:14px;top:14px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(0,0,0,.55);color:#f7f1e3;font-family:var(--font-cn);font-size:12px;border-radius:3px;backdrop-filter:blur(4px);letter-spacing:1px}
+  .featured-cover .fc-tag.s-real{background:linear-gradient(135deg,#c15346,#a8432f)}
+  .featured-cover .fc-tag.s-ai{background:linear-gradient(135deg,#5a7da8,#3f5f87)}
+  .featured-cover .fc-num{position:absolute;right:14px;bottom:14px;font-family:var(--font-cn);font-size:46px;color:rgba(255,255,255,.18);line-height:1;font-weight:700}
+  .featured-info{padding:24px 26px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:var(--card)}
+  .featured-info .fi-kicker{font-family:var(--font-cn);font-size:12px;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
+  .featured-info .fi-tit{font-family:var(--font-cn);font-size:24px;line-height:1.32;color:var(--text);font-weight:700;letter-spacing:.5px;margin:0}
+  .featured-info .fi-sub{font-size:14px;line-height:1.7;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .featured-info .fi-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .featured-info .fi-tag{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--bg);color:var(--text);border:1px solid var(--line)}
+  .featured-info .fi-tag.t-real{background:rgba(193,83,70,.10);color:var(--accent);border-color:rgba(193,83,70,.25)}
+  .featured-info .fi-tag.t-ai{background:rgba(90,125,168,.10);color:#5a7da8;border-color:rgba(90,125,168,.25)}
+  .featured-info .fi-go{margin-top:10px;font-size:13px;color:var(--accent);font-weight:700;display:inline-flex;align-items:center;gap:6px}
+  .featured-info .fi-go::after{content:'→';transition:transform .25s}
+  .featured-slide:hover .fi-go::after{transform:translateX(4px)}
+  .featured-nav{position:absolute;top:50%;left:0;right:0;display:flex;justify-content:space-between;padding:0 10px;pointer-events:none;transform:translateY(-50%)}
+  .featured-nav button{pointer-events:auto;width:38px;height:38px;border-radius:50%;background:rgba(247,241,227,.92);border:1px solid var(--line);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--font-cn)}
+  .featured-nav button:hover{background:var(--accent);color:#f7f1e3;border-color:var(--accent);transform:scale(1.06)}
+  .featured-dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:8px;z-index:2}
+  .featured-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(247,241,227,.5);border:0;padding:0;cursor:pointer;transition:all .25s}
+  .featured-dots .dot.on{width:24px;border-radius:4px;background:var(--accent)}
+  /* 暗夜 */
+  [data-theme="dark"] .featured{background:var(--card);border-color:var(--line)}
+  [data-theme="dark"] .featured-info{background:var(--card)}
+  [data-theme="dark"] .featured-nav button{background:rgba(11,14,20,.85);color:var(--text)}
+  [data-theme="dark"] .featured-dots .dot{background:rgba(199,205,214,.3)}
+  /* 马赛克 */
+  [data-theme="mosaic"] .featured{border-radius:0;border:2px solid var(--text);box-shadow:6px 6px 0 var(--accent)}
+  [data-theme="mosaic"] .featured-info .fi-tit{font-family:var(--font-cn);letter-spacing:1px}
+  [data-theme="mosaic"] .featured-nav button{border-radius:0;border:2px solid var(--text)}
+  [data-theme="mosaic"] .featured-dots .dot{border-radius:0}
+  [data-theme="mosaic"] .featured-dots .dot.on{border-radius:0}
+  /* 响应式 */
+  @media (max-width:720px){
+    .featured-slide{grid-template-columns:1fr}
+    .featured-cover{aspect-ratio:16/8}
+    .featured-info{padding:18px 18px 22px}
+    .featured-info .fi-tit{font-size:20px}
+  }
   /* nav 去毛玻璃改宣纸实色 + 朱砂下框 */
   nav{background:rgba(243,236,224,.93);border-bottom:2px solid var(--line)}
   [data-theme="dark"] nav{background:rgba(11,14,20,.86);border-bottom:1px solid var(--line)}
@@ -420,6 +471,23 @@
         <span class="label"><span class="warn-ico">注意</span> 截至 dsh v0.1.0-rc.6 实测 · rc 阶段可能失效</span>
       </div>
     </div>
+
+    <!-- 置顶深度评测·大图轮播（数据从 featured.json 注入） -->
+    <section class="featured" id="featured-carousel" aria-label="置顶深度评测">
+      <div class="featured-hd">
+        <span class="fh-ic">顶</span>
+        <span class="fh-tit" data-fd="title">置顶 · 深度评测</span>
+        <span class="fh-sub" data-fd="subtitle">装前先看这 2 条</span>
+      </div>
+      <div class="featured-track">
+        <div class="featured-slides" data-fd="slides"></div>
+        <div class="featured-nav">
+          <button data-fd="prev" aria-label="上一条">‹</button>
+          <button data-fd="next" aria-label="下一条">›</button>
+        </div>
+        <div class="featured-dots" data-fd="dots"></div>
+      </div>
+    </section>
 
     <!-- 合并卡 · dsh-at-file -->
     <article class="item" id="dsh-at-file">
@@ -1345,6 +1413,157 @@ function renderIcons(theme){
   }
   fetch('reviews.json', {cache:'no-cache'}).then(function(r){ return r.json(); }).then(fill).catch(function(){ /* 用兜底层写死内容，静默 */ });
 })();
+
+// L0 · 置顶深度评测·大图轮播（featured.json 注入；2条起步，可加）
+(function(){
+  var root = document.getElementById('featured-carousel');
+  if(!root) return;
+  var slidesEl = root.querySelector('[data-fd="slides"]');
+  var dotsEl   = root.querySelector('[data-fd="dots"]');
+  var prevBtn  = root.querySelector('[data-fd="prev"]');
+  var nextBtn  = root.querySelector('[data-fd="next"]');
+  var titEl    = root.querySelector('[data-fd="title"]');
+  var subEl    = root.querySelector('[data-fd="subtitle"]');
+  if(!slidesEl) return;
+
+  // SVG 装饰封面（按 cover.accent 切 3 套主题样式，纯内置无外链）
+  function coverSVG(kind, num){
+    if(kind==='memory'){
+      return '<svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">'+
+        '<defs><radialGradient id="g1" cx="35%" cy="40%" r="65%"><stop offset="0%" stop-color="#f7d9c2" stop-opacity=".5"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs>'+
+        '<rect width="400" height="240" fill="url(#g1)"/>'+
+        // 简化的"记忆碎片"方块阵列
+        '<g opacity=".7"><rect x="40" y="40" width="36" height="36" rx="4" fill="#f7d9c2" opacity=".4"/><rect x="84" y="40" width="36" height="36" rx="4" fill="#f7d9c2" opacity=".25"/><rect x="128" y="40" width="36" height="36" rx="4" fill="#f7d9c2" opacity=".55"/><rect x="172" y="40" width="36" height="36" rx="4" fill="#f7d9c2" opacity=".35"/></g>'+
+        '<g opacity=".5"><rect x="84" y="84" width="36" height="36" rx="4" fill="#fff" opacity=".2"/><rect x="128" y="84" width="36" height="36" rx="4" fill="#fff" opacity=".4"/><rect x="172" y="84" width="36" height="36" rx="4" fill="#fff" opacity=".25"/></g>'+
+        '<g opacity=".4"><rect x="128" y="128" width="36" height="36" rx="4" fill="#fff" opacity=".15"/><rect x="172" y="128" width="36" height="36" rx="4" fill="#fff" opacity=".3"/></g>'+
+        // 连接线，象征"跨会话记忆"
+        '<g stroke="#f7d9c2" stroke-width="1.5" fill="none" opacity=".55"><path d="M76 58 L120 58 L120 102 L164 102"/><path d="M164 58 L164 102"/><path d="M120 102 L120 146 L164 146"/></g>'+
+        '</svg>';
+    }
+    if(kind==='vision'){
+      return '<svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">'+
+        '<defs><radialGradient id="g2" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#bcd4ea" stop-opacity=".45"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs>'+
+        '<rect width="400" height="240" fill="url(#g2)"/>'+
+        // 截图框 + OCR 探测线
+        '<g><rect x="60" y="40" width="200" height="140" rx="6" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.55)" stroke-width="2"/><rect x="80" y="62" width="80" height="10" rx="2" fill="rgba(255,255,255,.55)"/><rect x="80" y="82" width="140" height="6" rx="2" fill="rgba(255,255,255,.35)"/><rect x="80" y="94" width="120" height="6" rx="2" fill="rgba(255,255,255,.35)"/><rect x="80" y="106" width="100" height="6" rx="2" fill="rgba(255,255,255,.35)"/><rect x="80" y="128" width="60" height="34" rx="3" fill="rgba(255,255,255,.4)"/></g>'+
+        // OCR 扫描线
+        '<g stroke="#bcd4ea" stroke-width="2" fill="none" opacity=".7"><line x1="60" y1="86" x2="260" y2="86"/><line x1="60" y1="118" x2="260" y2="118"/><line x1="60" y1="150" x2="260" y2="150"/></g>'+
+        // 流向
+        '<g fill="#f7f1e3" opacity=".85"><polygon points="280,118 268,112 268,124"/><line x1="262" y1="118" x2="292" y2="118" stroke="#f7f1e3" stroke-width="2"/></g>'+
+        // 输出代码块
+        '<g><rect x="298" y="90" width="80" height="80" rx="4" fill="rgba(0,0,0,.4)" stroke="#bcd4ea" stroke-width="1.5"/><rect x="306" y="100" width="30" height="4" fill="#bcd4ea"/><rect x="306" y="110" width="50" height="4" fill="rgba(188,212,234,.7)"/><rect x="306" y="120" width="40" height="4" fill="rgba(188,212,234,.5)"/><rect x="306" y="130" width="55" height="4" fill="rgba(188,212,234,.7)"/><rect x="306" y="140" width="35" height="4" fill="rgba(188,212,234,.5)"/><rect x="306" y="150" width="48" height="4" fill="rgba(188,212,234,.7)"/></g>'+
+        '</svg>';
+    }
+    if(kind==='read'){
+      return '<svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">'+
+        '<defs><radialGradient id="g3" cx="55%" cy="35%" r="75%"><stop offset="0%" stop-color="#bce3c2" stop-opacity=".45"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs>'+
+        '<rect width="400" height="240" fill="url(#g3)"/>'+
+        // 长报告页堆叠（4 张纸错位）
+        '<g><rect x="50" y="50" width="160" height="180" rx="4" fill="rgba(247,241,227,.92)" transform="rotate(-4 130 140)"/><rect x="62" y="42" width="160" height="180" rx="4" fill="rgba(247,241,227,.95)" transform="rotate(-1 142 132)"/><rect x="74" y="34" width="160" height="180" rx="4" fill="rgba(255,255,255,.98)"/></g>'+
+        // 报告内文线
+        '<g fill="#3a3328" opacity=".55"><rect x="86" y="52" width="100" height="6" rx="1"/><rect x="86" y="66" width="130" height="3" rx="1" opacity=".4"/><rect x="86" y="74" width="120" height="3" rx="1" opacity=".4"/><rect x="86" y="82" width="140" height="3" rx="1" opacity=".4"/><rect x="86" y="92" width="80" height="3" rx="1" opacity=".4"/><rect x="86" y="106" width="130" height="3" rx="1" opacity=".4"/><rect x="86" y="114" width="100" height="3" rx="1" opacity=".4"/><rect x="86" y="122" width="120" height="3" rx="1" opacity=".4"/></g>'+
+        // 高亮区 + 总结箭头
+        '<g><rect x="86" y="100" width="60" height="20" rx="2" fill="#c15346" opacity=".35"/><line x1="170" y1="112" x2="225" y2="112" stroke="#bce3c2" stroke-width="2"/><polygon points="225,108 233,112 225,116" fill="#bce3c2"/></g>'+
+        // 输出总结卡
+        '<g><rect x="240" y="98" width="120" height="68" rx="5" fill="rgba(0,0,0,.45)" stroke="#bce3c2" stroke-width="1.5"/><rect x="250" y="110" width="70" height="5" fill="#bce3c2"/><rect x="250" y="122" width="100" height="3" fill="rgba(188,227,194,.7)"/><rect x="250" y="130" width="90" height="3" fill="rgba(188,227,194,.7)"/><rect x="250" y="138" width="100" height="3" fill="rgba(188,227,194,.7)"/><rect x="250" y="148" width="60" height="6" rx="2" fill="#c15346" opacity=".6"/></g>'+
+        '</svg>';
+    }
+    return '<div class="fc-fallback" style="background:linear-gradient(135deg,#c15346,#8b3a2e)"></div>';
+  }
+
+  function buildSlide(d, i){
+    var cov = d.cover||{};
+    var status = d.status==='real' ? 's-real' : 's-ai';
+    var statusLbl = d.status==='real' ? '真装实测' : 'AI 评测';
+    var tagClass  = d.status==='real' ? 't-real' : 't-ai';
+    var tags = (d.tags||[]).map(function(t){
+      return '<span class="fi-tag '+(t==='真装实测'||t==='AI评测' ? tagClass : '')+'">'+t+'</span>';
+    }).join('');
+    var a = document.createElement('a');
+    a.className = 'featured-slide';
+    a.href = d.anchor || '#';
+    a.setAttribute('data-key', d.key || '');
+    a.innerHTML =
+      '<div class="featured-cover" style="background:'+(cov.bg||'#333')+'">'+
+        coverSVG(cov.accent, cov.num)+
+        '<span class="fc-tag '+status+'">'+statusLbl+'</span>'+
+        (cov.num ? '<span class="fc-num">'+cov.num+'</span>' : '')+
+      '</div>'+
+      '<div class="featured-info">'+
+        '<div class="fi-kicker">'+d.kicker+'</div>'+
+        '<h3 class="fi-tit">'+d.title+'</h3>'+
+        '<p class="fi-sub">'+d.sub+'</p>'+
+        '<div class="fi-tags">'+tags+'</div>'+
+        '<div class="fi-go">看完整评测</div>'+
+      '</div>';
+    a.addEventListener('click', function(){ /* 锚点跳转原生即可 */ });
+    return a;
+  }
+
+  function render(data){
+    var items = (data && data.items) || [];
+    if(items.length === 0) {
+      // 无置顶数据：整个块隐藏，不占位
+      root.style.display = 'none';
+      return;
+    }
+    if(titEl) titEl.textContent = data.title || '置顶 · 深度评测';
+    if(subEl) subEl.textContent = data.subtitle || '';
+    slidesEl.innerHTML = '';
+    items.forEach(function(d, i){
+      slidesEl.appendChild(buildSlide(d, i));
+    });
+    // 指示点
+    dotsEl.innerHTML = '';
+    items.forEach(function(_, i){
+      var b = document.createElement('button');
+      b.className = 'dot' + (i===0?' on':'');
+      b.setAttribute('aria-label','第'+(i+1)+'条');
+      b.addEventListener('click', function(){ go(i); });
+      dotsEl.appendChild(b);
+    });
+
+    var idx = 0, timer = null, autoMs = (data.autoMs || 5000);
+    function go(n){
+      idx = (n + items.length) % items.length;
+      slidesEl.style.transform = 'translateX(' + (-idx*100) + '%)';
+      var ds = dotsEl.querySelectorAll('.dot');
+      ds.forEach(function(d,i){ d.classList.toggle('on', i===idx); });
+    }
+    function play(){ stop(); timer = setInterval(function(){ go(idx+1); }, autoMs); }
+    function stop(){ if(timer) { clearInterval(timer); timer=null; } }
+
+    prevBtn.addEventListener('click', function(){ go(idx-1); play(); });
+    nextBtn.addEventListener('click', function(){ go(idx+1); play(); });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', play);
+    // 触屏滑动
+    var sx = null;
+    root.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, {passive:true});
+    root.addEventListener('touchend', function(e){
+      if(sx === null) return;
+      var dx = (e.changedTouches[0].clientX - sx);
+      if(Math.abs(dx) > 40){ go(idx + (dx<0?1:-1)); play(); }
+      sx = null;
+    });
+
+    // 键盘左右
+    root.addEventListener('keydown', function(e){
+      if(e.key==='ArrowLeft'){ go(idx-1); play(); }
+      if(e.key==='ArrowRight'){ go(idx+1); play(); }
+    });
+    root.tabIndex = 0;
+
+    go(0);
+    if(items.length > 1) play();
+  }
+
+  fetch('featured.json', {cache:'no-cache'}).then(function(r){ return r.json(); }).then(render).catch(function(){
+    // 失败：整块隐藏，不挡信息流
+    root.style.display = 'none';
+  });
+})();
+
 
 // L1 · 一键安装包生成器（纯前端，勾选→拼脚本→复制）
 (function(){

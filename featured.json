@@ -1,0 +1,35 @@
+{
+  "title": "置顶 · 深度评测",
+  "subtitle": "装前先看这 2 条",
+  "autoMs": 5000,
+  "items": [
+    {
+      "key": "dsh-memory-evolve",
+      "anchor": "#dsh-memory-evolve",
+      "kicker": "长记忆 · 真测",
+      "title": "一人公司的真·长记忆：跨会话省掉所有重复交代",
+      "sub": "你跟 AI 说过『我做什么、我不要什么、我用什么工具』——下次开会话全忘。装它之后 AI 记住了，一周后还用得上。一人公司真正省时间的，不是它能『做什么』，是它能『记住什么』。",
+      "tags": ["真装实测", "跨会话记忆", "个人偏好沉淀"],
+      "status": "real",
+      "cover": {
+        "bg": "linear-gradient(135deg,#c15346 0%,#8b3a2e 60%,#4a2620 100%)",
+        "accent": "memory",
+        "num": "01"
+      }
+    },
+    {
+      "key": "dsh-deepread",
+      "anchor": "#dsh-deepread",
+      "kicker": "深度阅读 · 真测",
+      "title": "把『长报告拆掉』变成一行命令：网页/PDF 丢进去，3 分钟拿到判断",
+      "sub": "看到 30 页研报、整站博客、混排的 PDF——不再从头读。丢给它，给你拆开要点+交叉验证+一段直白结论。深度调研不是『读完』，是『读到位』。",
+      "tags": ["真装实测", "长报告拆解", "调研首选"],
+      "status": "real",
+      "cover": {
+        "bg": "linear-gradient(135deg,#3d6b4d 0%,#264a32 60%,#142d1f 100%)",
+        "accent": "read",
+        "num": "02"
+      }
+    }
+  ]
+}
