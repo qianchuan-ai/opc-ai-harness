@@ -224,11 +224,11 @@
   body{background-image:radial-gradient(rgba(158,43,37,.022) 1px,transparent 1px);background-size:24px 24px}
   [data-theme="dark"] body{background-image:none}
   /* 卡片内·古代法帖落款：仅国风显示，竖排名句 + 朱印落款 */
-  .item-fati{display:flex;justify-content:flex-end;align-items:flex-start;gap:14px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);opacity:.62}
-  [data-theme="dark"] .item-fati,[data-theme="mosaic"] .item-fati{display:none}
-  .item-fati .if-col{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:21px;line-height:1.25;color:#3a3328;letter-spacing:3px;max-height:150px}
-  .item-fati .if-col b{color:var(--accent);font-weight:400}
-  .item-fati .if-seal{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:13px;line-height:1.3;color:#f7f1e3;background:var(--accent);padding:9px 6px;border-radius:5px;box-shadow:0 1px 0 rgba(0,0,0,.15);letter-spacing:1px;max-height:150px;white-space:nowrap}
+  .item-philosophy{display:flex;justify-content:flex-end;align-items:flex-start;gap:14px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);opacity:.62}
+  [data-theme="dark"] .item-philosophy,[data-theme="mosaic"] .item-philosophy{display:none}
+  .item-philosophy .ip-col{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:18px;line-height:1.3;color:#3a3328;letter-spacing:2px;max-height:160px}
+  .item-philosophy .ip-col b{color:var(--accent);font-weight:400}
+  .item-philosophy .ip-seal{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:13px;line-height:1.3;color:#f7f1e3;background:var(--accent);padding:9px 6px;border-radius:5px;box-shadow:0 1px 0 rgba(0,0,0,.15);letter-spacing:1px;max-height:160px;white-space:nowrap}
   /* nav 去毛玻璃改宣纸实色 + 朱砂下框 */
   nav{background:rgba(243,236,224,.93);border-bottom:2px solid var(--line)}
   [data-theme="dark"] nav{background:rgba(11,14,20,.86);border-bottom:1px solid var(--line)}
@@ -449,7 +449,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-at-file" onclick="toggleLike(this, 'dsh-at-file')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -484,7 +484,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-plan-execute" onclick="toggleLike(this, 'dsh-plan-execute')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -521,7 +521,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="@liustack/modlens" onclick="toggleLike(this, '@liustack/modlens')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -558,7 +558,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-memory-evolve" onclick="toggleLike(this, 'dsh-memory-evolve')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -595,7 +595,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="@anionex/dsh-turn-rewind" onclick="toggleLike(this, '@anionex/dsh-turn-rewind')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -632,7 +632,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-deepread" onclick="toggleLike(this, 'dsh-deepread')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -667,7 +667,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-agent-teams" onclick="toggleLike(this, 'dsh-agent-teams')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -704,7 +704,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-tui" onclick="toggleLike(this, 'dsh-tui')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -741,7 +741,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-skin" onclick="toggleLike(this, 'dsh-skin')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -777,7 +777,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-library" onclick="toggleLike(this, 'dsh-library')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -812,7 +812,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-web-ui" onclick="toggleLike(this, 'dsh-web-ui')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -847,7 +847,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="dsh-cost-meter" onclick="toggleLike(this, 'dsh-cost-meter')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -882,7 +882,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="treg" onclick="toggleLike(this, 'treg')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -917,7 +917,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="srt-whiteboard-animation" onclick="toggleLike(this, 'srt-whiteboard-animation')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -952,7 +952,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="agency-agents-zh" onclick="toggleLike(this, 'agency-agents-zh')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -987,7 +987,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="yichen-x-slicer" onclick="toggleLike(this, 'yichen-x-slicer')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -1022,7 +1022,7 @@
           </div>
         </div>
         <div class="item-foot"><button class="like-btn" data-plugin="矩媒MatrixMedia" onclick="toggleLike(this, '矩媒MatrixMedia')"><span class="heart">藏</span> <span class="count">0</span></button></div>
-        <div class="item-fati" aria-hidden="true"></div>
+        <div class="item-philosophy" data-ai="philosophy"></div>
       </div>
     </article>
 
@@ -1321,9 +1321,21 @@ function renderIcons(theme){
       var sum = box.querySelector('[data-ai="summary"]');
       var yes = box.querySelector('[data-ai="yes"]');
       var no  = box.querySelector('[data-ai="no"]');
+      var phi = box.querySelector('[data-ai="philosophy"]');
       if(sum) sum.innerHTML = '<b>核心价值</b><br>' + (d.summary||'');
       if(yes) yes.innerHTML = '<b>使用场景</b>' + (d.yes||'');
       if(no)  no.innerHTML  = '<b>真实风险</b>' + (d.no||'');
+      if(phi){
+        if(d.philosophy){
+          var m = d.philosophy.match(/^《(.+?)》/);
+          var src = m ? m[1] : '东方哲学';
+          var text = d.philosophy.replace(/^《.+?》/, '');
+          phi.innerHTML = '<div class="ip-col">'+text+'</div><div class="ip-seal">'+src+'</div>';
+          phi.style.display = '';
+        } else {
+          phi.style.display = 'none';
+        }
+      }
     });
   }
   fetch('reviews.json', {cache:'no-cache'}).then(function(r){ return r.json(); }).then(fill).catch(function(){ /* 用兜底层写死内容，静默 */ });
@@ -1367,34 +1379,6 @@ function renderIcons(theme){
   update();
 })();
 
-// 卡片内·古代法帖落款（仅国风显示，CSS 控制显隐；此处按卡片顺序轮询填充真实名句）
-(function(){
-  // 真实古代名人法帖名句 + 出处落款（纯装饰，与实测调性呼应：求真 / 慎装 / 躬行）
-  var FATI_POOL = [
-    {t:'后之视今，亦犹今之视昔', s:'王羲之·兰亭序'},
-    {t:'古之立大事者，不惟有超世之才，亦必有坚忍不拔之志', s:'苏轼·晁错论'},
-    {t:'心正则笔正', s:'柳公权'},
-    {t:'翰不虚动，下必有由', s:'孙过庭·书谱'},
-    {t:'随人作计终后人，自成一家始逼真', s:'黄庭坚'},
-    {t:'非淡泊无以明志，非宁静无以致远', s:'诸葛亮·诫子书'},
-    {t:'天下事，在局外呐喊议论总无益，必躬身入局', s:'曾国藩'},
-    {t:'读万卷书，行万里路', s:'顾炎武'},
-    {t:'心既贮之，随意落笔，皆得自然', s:'米芾'},
-    {t:'遇事不敢忽也', s:'欧阳修'},
-    {t:'知行合一', s:'王阳明'},
-    {t:'点画皆有筋骨，字体自然雄媚', s:'颜真卿'},
-    {t:'纸上得来终觉浅，绝知此事要躬行', s:'陆游·冬夜读书'},
-    {t:'博观而约取，厚积而薄发', s:'苏轼·稼说'},
-    {t:'业精于勤，荒于嬉', s:'韩愈·进学解'},
-    {t:'欲穷千里目，更上一层楼', s:'王之涣·登鹳雀楼'},
-    {t:'千淘万漉虽辛苦，吹尽狂沙始到金', s:'刘禹锡·浪淘沙'}
-  ];
-  var nodes = document.querySelectorAll('.item-fati');
-  nodes.forEach(function(el, i){
-    var d = FATI_POOL[i % FATI_POOL.length];
-    el.innerHTML = '<div class="if-col">'+d.t+'</div><div class="if-seal">'+d.s+'</div>';
-  });
-})();
 </script>
 </body>
 </html>
