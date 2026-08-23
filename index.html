@@ -1394,7 +1394,7 @@ function renderIcons(theme){
       var sum = box.querySelector('[data-ai="summary"]');
       var yes = box.querySelector('[data-ai="yes"]');
       var no  = box.querySelector('[data-ai="no"]');
-      var phi = box.querySelector('[data-ai="philosophy"]');
+      var phi = art ? art.querySelector('[data-ai="philosophy"]') : null;
       if(sum) sum.innerHTML = '<b>核心价值</b><br>' + (d.summary||'');
       if(yes) yes.innerHTML = '<b>使用场景</b>' + (d.yes||'');
       if(no)  no.innerHTML  = '<b>真实风险</b>' + (d.no||'');
