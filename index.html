@@ -1,360 +1,1368 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>opc-ai-harness · 一人公司 dsh 插件策展库</title>
-<meta name="description" content="给一人公司 / OPC 主理人挑出来的、亲测装通过并记下真实坑的 dsh 插件清单。开源下来不一定好用，我替你先踩坑。" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dsh 插件怎么选？真装过才说 · 谦川实测</title>
+<meta name="description" content="DeepSeek Harness（dsh）插件真装实测指南：一人公司主理人亲手跑通 17+ 插件，敢说适合谁、不适合谁、哪个别装。dsh 插件推荐、安装命令、踩坑劝退一站看懂。">
+<meta name="keywords" content="dsh 插件,DeepSeek Harness,dsh 插件推荐,dsh 插件实测,AI 插件,一人公司,AI 效率搭子,插件安装命令">
+<meta name="author" content="谦川 · AI宇宙狂想者">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://qianchuan-ai.github.io/opc-ai-harness/">
+<meta property="og:title" content="dsh 插件怎么选？真装过才说">
+<meta property="og:description" content="一人公司主理人亲手跑通，敢劝退的 dsh 插件实测指南">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://qianchuan-ai.github.io/opc-ai-harness/">
+<meta property="og:image" content="https://qianchuan-ai.github.io/opc-ai-harness/og-cover.png">
+<meta property="og:site_name" content="dsh 插件实测 · 谦川策展">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="dsh 插件怎么选？真装过才说">
+<meta name="twitter:description" content="一人公司主理人亲手跑通，敢劝退的 dsh 插件实测指南">
+<meta name="twitter:image" content="https://qianchuan-ai.github.io/opc-ai-harness/og-cover.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "dsh 插件实测 · 谦川策展",
+  "url": "https://qianchuan-ai.github.io/opc-ai-harness/",
+  "description": "DeepSeek Harness（dsh）插件真装实测指南：独立实测、敢劝退、场景化选型。",
+  "author": {"@type": "Person", "name": "谦川", "alternateName": "AI宇宙狂想者"},
+  "inLanguage": "zh-CN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "dsh 插件真装实测清单",
+  "description": "一人公司主理人亲手装过、踩过坑的 dsh 插件评测，标清适合谁、不适合谁、哪个别装。",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "dsh-at-file", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#dsh-at-file"},
+    {"@type": "ListItem", "position": 2, "name": "dsh-plan-execute（劝退）", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#dsh-plan-execute"},
+    {"@type": "ListItem", "position": 3, "name": "modlens", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#liustackmodlens"},
+    {"@type": "ListItem", "position": 4, "name": "dsh-memory-evolve", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#dsh-memory-evolve"},
+    {"@type": "ListItem", "position": 5, "name": "dsh-turn-rewind", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#anionexdsh-turn-rewind"},
+    {"@type": "ListItem", "position": 6, "name": "dsh-deepread", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#dsh-deepread"},
+    {"@type": "ListItem", "position": 7, "name": "dsh-agent-teams", "url": "https://qianchuan-ai.github.io/opc-ai-harness/#dsh-agent-teams"}
+  ]
+}
+</script>
 <style>
   :root{
-    --bg:#0b0e14; --bg2:#11151f; --card:#161b27; --line:#232a3a;
-    --text:#e6e9f0; --muted:#9aa3b8; --faint:#6b7385;
-    --accent:#5b8cff; --accent2:#37e0c8; --warn:#ffb454; --bad:#ff6b6b; --good:#3ddc97;
-    --radius:16px;
+    /* 默认·国风（宣纸墨韵 + 书法） */
+    --bg:#f3ece0;--card:#fbf7ee;--card2:#efe7d4;--line:#d8ccb2;--text:#26221b;--muted:#847860;
+    --accent:#9e2b25;--accent2:#3f6f4f;--warn:#b8893b;--bad:#a83a2c;--good:#3f6f4f;--radius:6px;
+    --font-cn:"Ma Shan Zheng","Noto Serif SC","Songti SC","STSong","SimSun","Source Han Serif SC",serif;
+    --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
+  /* 可选·暗夜（原风格） */
+  [data-theme="dark"]{
+    --bg:#0b0e14;--card:#141925;--card2:#1a2030;--line:#232a3a;--text:#e6e9f0;--muted:#9aa3b8;
+    --accent:#5b8cff;--accent2:#37e0c8;--warn:#ffb454;--bad:#ff6b6b;--good:#3ddc97;--radius:16px;
+  }
+  /* 可选·马赛克（像素） */
+  [data-theme="mosaic"]{
+    --bg:#16182b;--card:#1f2238;--card2:#272b45;--line:#3a3f63;--text:#eaf0ff;--muted:#8b93c4;
+    --accent:#ff3ea5;--accent2:#1fd6c8;--warn:#ffd23f;--bad:#ff5b5b;--good:#5bff8f;--radius:0px;
+    --font-cn:"DotGothic16","Zpix","Fusion Pixel",monospace;
+    --font-ui:"DotGothic16","Zpix","Fusion Pixel",ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    background:radial-gradient(1200px 600px at 70% -10%, #16203a 0%, var(--bg) 55%) fixed, var(--bg);
-    color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    line-height:1.7; -webkit-font-smoothing:antialiased;
-  }
+  body{background:var(--bg);color:var(--text);font-family:var(--font-cn);line-height:1.7;-webkit-font-smoothing:antialiased}
+  [data-theme="dark"] body{font-family:var(--font-ui)}
   a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
-  header.nav{
-    position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);
-    background:rgba(11,14,20,.72);border-bottom:1px solid var(--line);
-  }
-  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .brand{font-weight:700;letter-spacing:.3px}
-  .brand small{color:var(--faint);font-weight:400;margin-left:8px;font-size:12px}
-  .nav a.cta{
-    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06121f;
-    padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px;
-  }
-  .hero{padding:64px 0 40px;text-align:center}
-  .hero .tag{
-    display:inline-block;border:1px solid var(--line);color:var(--muted);
-    padding:5px 14px;border-radius:999px;font-size:13px;margin-bottom:20px;
-  }
-  .hero h1{font-size:clamp(30px,6vw,52px);line-height:1.15;font-weight:800;letter-spacing:-.5px}
-  .hero h1 .hl{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero .slogan{font-size:clamp(16px,3vw,21px);color:var(--text);margin-top:16px;font-weight:600}
-  .hero .sub{color:var(--muted);margin-top:10px;font-size:14.5px}
-  .hero .by{color:var(--faint);margin-top:10px;font-size:13px}
-  .btns{margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .btn{
-    padding:12px 22px;border-radius:12px;font-weight:700;font-size:15px;border:1px solid var(--line);
-  }
-  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06121f;border:none}
-  section{padding:42px 0;border-top:1px solid var(--line)}
-  h2{font-size:24px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px}
-  h2 .k{color:var(--accent)}
-  .lead{color:var(--muted);margin-bottom:22px;max-width:780px}
-  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .pc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px}
-  .pc .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .pc .name{font-weight:700;font-size:16px}
-  .pc .ver{color:var(--faint);font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace}
-  .pc .fn{color:var(--text);font-size:14.5px}
-  .pc .use{color:var(--muted);font-size:14px}
-  .badge{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
-  .b-ok{background:rgba(61,220,151,.14);color:var(--good);border:1px solid rgba(61,220,151,.3)}
-  .b-warn{background:rgba(255,180,84,.14);color:var(--warn);border:1px solid rgba(255,180,84,.3)}
-  .b-no{background:rgba(255,107,107,.14);color:var(--bad);border:1px solid rgba(255,107,107,.3)}
-  pre{background:#0a0d14;border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow:auto;color:#cdd6e8;font-size:13px;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.6}
-  .pit{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
-  .pit .n{color:var(--accent);font-weight:800;font-family:ui-monospace,monospace}
-  .pit .t{color:var(--muted);font-size:14px}
-  .faces{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .face{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
-  .face .ic{font-size:22px} .face h3{font-size:16px;margin:8px 0 6px} .face p{color:var(--muted);font-size:14px}
-  .face .wxid{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:rgba(91,140,255,.12);border:1px solid rgba(91,140,255,.4);color:var(--accent);font-weight:700;font-size:14px;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.5px}
-  .face .wxid:hover{background:rgba(91,140,255,.2)}
-  .face .wxid .cp{font-size:11px;color:var(--faint);font-weight:400;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;letter-spacing:0}
-  .face .social{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
-  .face .social a{display:inline-flex;align-items:center;gap:4px;background:rgba(91,140,255,.12);border:1px solid rgba(91,140,255,.4);color:var(--accent);font-weight:700;font-size:13px;padding:7px 13px;border-radius:10px}
-  .face .social a:hover{background:rgba(91,140,255,.2);text-decoration:none}
-  footer{padding:34px 0 56px;color:var(--faint);font-size:13px;text-align:center;border-top:1px solid var(--line)}
-  footer a{color:var(--muted)}
+  a:hover{color:var(--accent2)}
 
-  /* 新增：场景对照表 */
-  .scene-table{width:100%;border-collapse:collapse;margin-top:16px}
-  .scene-table th,.scene-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line)}
-  .scene-table th{color:var(--muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-  .scene-table td{font-size:14px}
-  .scene-table tr:hover td{background:rgba(91,140,255,.05)}
-  .scene-table .plugin-link{color:var(--accent);font-weight:600}
+  /* ===== nav ===== */
+  nav{position:sticky;top:0;z-index:100;background:rgba(11,14,20,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1120px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{font-weight:700;font-size:24px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+  .brand .dot{width:13px;height:13px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .brand b{color:var(--accent2)}
+  .nav-right{display:flex;align-items:center;gap:10px}
+  .nav-tag{border:1px solid var(--line);padding:6px 12px;border-radius:9px;font-size:13px;color:var(--muted)}
+  .nav-cta{background:var(--accent2);color:var(--bg);font-size:13px;font-weight:600;padding:7px 13px;border-radius:9px}
+  @media(max-width:640px){.nav-tag{display:none}}
 
-  /* 新增：精选插件高亮 */
-  .pc.featured{border-color:var(--accent);background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(55,224,200,.05))}
-  .pc.featured .name{color:var(--accent)}
+  /* ===== layout: feed + rail ===== */
+  .stage{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
+  .feed{padding:34px 0 80px;min-width:0}
+  .rail{padding:34px 0;position:sticky;top:74px}
+  @media(max-width:900px){.stage{grid-template-columns:1fr}.rail{display:none}}
 
-  /* 新增：同类推荐区 */
-  .similar{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:24px}
-  .similar h3{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--muted)}
-  .similar ul{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-  .similar li{font-size:13px;color:var(--text)}
-  .similar li::before{content:"→ ";color:var(--accent)}
+  /* ===== curator intro (top of feed) ===== */
+  .curator{display:flex;gap:16px;align-items:flex-start;padding:22px;background:linear-gradient(160deg,var(--card),rgba(55,224,200,.05));border:1px solid var(--line);border-radius:var(--radius);margin-bottom:26px}
+  .curator .ava{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+  .curator h1{font-size:19px;margin-bottom:4px}
+  .curator .sub{color:var(--muted);font-size:13px;margin-bottom:8px}
+  .curator .sub b{color:var(--accent2);font-weight:600}
+  .curator p{font-size:14px;color:var(--text);line-height:1.7}
+  .curator .label{display:inline-block;margin-top:10px;font-size:11px;color:var(--warn);border:1px solid rgba(255,180,84,.35);background:rgba(255,180,84,.08);padding:3px 9px;border-radius:7px}
 
-  @media(max-width:680px){
-    .cards,.faces{grid-template-columns:1fr}
-    section{padding:34px 0}
-    .similar ul{grid-template-columns:1fr}
-  }
+  /* ===== feed item (the core) ===== */
+  .item{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}
+  .item:last-child{border-bottom:none}
+  .meta{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding-top:2px}
+  .meta .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--card2);border:1px solid var(--line)}
+  .meta .date{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .meta .typ{font-size:10px;color:var(--muted);letter-spacing:.5px}
+  .body{min-width:0}
+
+  /* type: editorial 导语 */
+  .ed h2{font-size:22px;line-height:1.4;margin-bottom:10px}
+  .ed h2 em{font-style:normal;color:var(--accent2)}
+  .ed p{font-size:15px;color:var(--text);line-height:1.8}
+  .ed .sign{margin-top:12px;font-size:13px;color:var(--muted)}
+
+  /* type: verdict 插件实测 */
+  .v-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .v-name{font-size:18px;font-weight:700}
+  .v-name small{color:var(--muted);font-weight:400;font-size:12px;margin-left:6px}
+  .v-status{font-size:12px;font-weight:600;padding:3px 10px;border-radius:8px}
+  .s-ok{background:rgba(61,220,151,.12);color:var(--good);border:1px solid rgba(61,220,151,.3)}
+  .s-bad{background:rgba(255,107,107,.12);color:var(--bad);border:1px solid rgba(255,107,107,.3)}
+  .s-warn{background:rgba(255,180,84,.12);color:var(--warn);border:1px solid rgba(255,180,84,.3)}
+  .v-quote{font-size:15px;line-height:1.75;margin-bottom:12px}
+  .v-shot{width:100%;height:64px;border-radius:12px;background:var(--card2);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;margin-bottom:12px;gap:6px}
+  .v-who{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .v-who .col{padding:11px 13px;border-radius:11px;font-size:13px;line-height:1.6}
+  .v-who .yes{background:rgba(61,220,151,.06);border:1px solid rgba(61,220,151,.2)}
+  .v-who .no{background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.2)}
+  .v-who .col b{display:block;font-size:11px;margin-bottom:4px;letter-spacing:.4px}
+  .v-who .yes b{color:var(--good)} .v-who .no b{color:var(--bad)}
+  .v-cmd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:#0d1119;border:1px solid var(--line);border-radius:10px;padding:11px 13px;color:var(--accent2);overflow-x:auto;display:flex;align-items:center;gap:10px}
+  .v-cmd .c{color:var(--muted)}
+  .v-cmd .cmd-text{flex:1;min-width:0}
+  .v-copy{flex-shrink:0;border:1px solid var(--line);background:var(--card2);color:var(--text);font-size:11px;padding:5px 10px;border-radius:7px;cursor:pointer;font-family:inherit;transition:.15s}
+  .v-copy:hover{border-color:var(--accent);color:var(--accent)}
+  .v-copy.done{background:rgba(61,220,151,.15);border-color:var(--good);color:var(--good)}
+
+  /* type: scenario guide 场景合集 */
+  .sc h3{font-size:17px;margin-bottom:4px}
+  .sc .lead{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .sc-row{display:flex;gap:10px;flex-wrap:wrap}
+  .sc-mini{flex:1;min-width:150px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:13px}
+  .sc-mini .n{font-size:14px;font-weight:600;margin-bottom:3px}
+  .sc-mini .d{font-size:12px;color:var(--muted);line-height:1.5}
+  .sc-mini .badge{display:inline-block;margin-top:7px;font-size:10px;color:var(--good);border:1px solid rgba(61,220,151,.3);padding:2px 7px;border-radius:6px}
+
+  /* type: alert 劝退快讯 */
+  .al{padding:14px 16px;border-radius:12px;background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.25)}
+  .al .t{font-size:13px;font-weight:600;color:var(--bad);margin-bottom:4px}
+  .al p{font-size:13.5px;color:var(--text);line-height:1.65}
+
+  /* type: ranking 周榜 */
+  .rk h3{font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .rk ol{list-style:none;counter-reset:r}
+  .rk li{counter-increment:r;display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .rk li:last-child{border-bottom:none}
+  .rk li::before{content:counter(r);width:18px;height:18px;border-radius:6px;background:var(--card2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);flex-shrink:0}
+  .rk li:nth-child(1)::before{background:var(--warn);color:var(--bg);border-color:var(--warn);font-weight:700}
+  .rk .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rk .st{color:var(--accent2);font-size:12px;font-variant-numeric:tabular-nums;flex-shrink:0}
+
+  /* ===== right rail ===== */
+  .rail-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:18px}
+  .rail-card h4{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+  .rail-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .rail-chips a{font-size:12.5px;color:var(--text);background:var(--card2);border:1px solid var(--line);padding:6px 11px;border-radius:18px;transition:.15s}
+  .rail-chips a:hover{border-color:var(--accent);color:var(--accent)}
+  .rail-stat{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .rail-stat:last-child{border-bottom:none}
+  .rail-stat .v{color:var(--accent2);font-weight:600;font-variant-numeric:tabular-nums}
+  .rail-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg);text-align:center;font-weight:600;font-size:14px;padding:12px;border-radius:12px;display:block}
+  .rail-cta:hover{color:var(--bg);opacity:.92}
+  .rail-links{display:flex;flex-direction:column;gap:6px;margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+  .rail-links a{font-size:12px;color:var(--accent2);text-decoration:none}
+  .rail-links a:hover{text-decoration:underline}
+  .card-foot{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .foot-issue{font-size:12px;color:var(--accent2);text-decoration:none}
+  .foot-issue:hover{text-decoration:underline}
+
+  /* AI评价折叠区 */
+  .ai-box{margin-top:12px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--card2)}
+  .ai-toggle{display:flex;align-items:center;gap:8px;padding:9px 13px;cursor:pointer;font-size:13px;color:var(--text);user-select:none;transition:background .15s}
+  .ai-toggle:hover{background:var(--card)}
+  .ai-toggle .ai-lbl{font-weight:600;color:var(--accent2)}
+  .ai-toggle .ai-arrow{margin-left:auto;transition:transform .2s;font-size:12px}
+  .ai-box.open .ai-arrow{transform:rotate(180deg)}
+  .ai-inner{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s}
+  .ai-box.open .ai-inner{max-height:1200px;padding:0 13px 12px}
+  .ai-summary{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:10px}
+  .ai-summary b{color:var(--accent2)}
+  .ai-hint{font-size:12px;color:var(--muted)}
+  .ai-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+  .ai-meta .m-yes{padding:9px 11px;border-radius:9px;background:rgba(61,220,151,.07);border:1px solid rgba(61,220,151,.25);font-size:12px;line-height:1.6}
+  .ai-meta .m-no{padding:9px 11px;border-radius:9px;background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.25);font-size:12px;line-height:1.6}
+  .ai-meta .m-yes b,.ai-meta .m-no b{display:block;font-size:11px;margin-bottom:3px;letter-spacing:.3px}
+  .ai-risk{font-size:12px;color:var(--warn);line-height:1.6;margin-bottom:10px;padding:8px 10px;background:rgba(255,180,84,.07);border-radius:8px;border:1px solid rgba(255,180,84,.2)}
+  .ai-cmd-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+  .ai-cmd-row code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent2);background:var(--bg);padding:3px 7px;border-radius:6px;border:1px solid var(--line)}
+
+  /* 点赞按钮 */
+  .like-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;user-select:none;flex-shrink:0}
+  .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .like-btn.liked{border-color:var(--accent);color:var(--accent);background:rgba(100,166,245,.1)}
+  .like-btn .heart{font-size:13px}
+  .item-foot{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+  .rail-sub{margin-top:8px}
+  .rail-sub input{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px;font-family:inherit}
+  .rail-sub button{margin-top:8px;width:100%;padding:9px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg);font-weight:600;font-size:13px;cursor:pointer}
+  .rail-sub button:hover{opacity:.92}
+  .rail-soon{font-size:12px;color:var(--muted);line-height:1.6;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+
+  .foot{max-width:1120px;margin:0 auto;padding:30px 20px 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);line-height:1.8}
+  .foot a{color:var(--muted)}
+
+  /* ===== 主题切换按钮 ===== */
+  .theme-btn{border:1px solid var(--line);background:var(--card2);color:var(--text);font-size:13px;padding:6px 13px;border-radius:9px;cursor:pointer;font-family:var(--font-cn);transition:.15s}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ===== 国风覆盖（默认主题·宣纸墨韵 + 书法） ===== */
+  /* 宣纸底纹：极淡纤维感 */
+  body{background-image:radial-gradient(rgba(158,43,37,.022) 1px,transparent 1px);background-size:24px 24px}
+  [data-theme="dark"] body{background-image:none}
+  /* 国风·法帖装饰带：竖排书法句 + 闲章，仅国风显示 */
+  .fati{display:flex;justify-content:center;align-items:flex-start;gap:34px;max-width:1120px;margin:34px auto 0;padding:22px 20px;opacity:.5}
+  [data-theme="dark"] .fati,[data-theme="mosaic"] .fati{display:none}
+  .fati-col{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:30px;line-height:1.15;color:#3a3328;letter-spacing:2px;height:130px}
+  .fati-col b{color:var(--accent);font-weight:400;font-family:var(--font-cn)}
+  .fati-seal{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:18px;line-height:1.3;color:#f7f1e3;background:var(--accent);padding:12px 8px;border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.15);letter-spacing:1px;height:130px}
+  /* 卡片内·古代法帖落款：仅国风显示，竖排名句 + 朱印落款 */
+  .item-fati{display:flex;justify-content:flex-end;align-items:flex-start;gap:14px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);opacity:.62}
+  [data-theme="dark"] .item-fati,[data-theme="mosaic"] .item-fati{display:none}
+  .item-fati .if-col{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:21px;line-height:1.25;color:#3a3328;letter-spacing:3px;max-height:150px}
+  .item-fati .if-col b{color:var(--accent);font-weight:400}
+  .item-fati .if-seal{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:13px;line-height:1.3;color:#f7f1e3;background:var(--accent);padding:9px 6px;border-radius:5px;box-shadow:0 1px 0 rgba(0,0,0,.15);letter-spacing:1px;max-height:150px;white-space:nowrap}
+  /* nav 去毛玻璃改宣纸实色 + 朱砂下框 */
+  nav{background:rgba(243,236,224,.93);border-bottom:2px solid var(--line)}
+  [data-theme="dark"] nav{background:rgba(11,14,20,.86);border-bottom:1px solid var(--line)}
+  .brand{font-family:var(--font-cn);font-size:26px;letter-spacing:2px;font-weight:400}
+  .brand .dot{background:linear-gradient(135deg,var(--accent),var(--warn));border-radius:2px}
+  .brand b{color:var(--accent);font-family:var(--font-cn);font-size:26px;letter-spacing:2px}
+  .nav-cta{background:var(--accent);color:#f7f1e3;border-radius:4px}
+  [data-theme="dark"] .nav-cta{background:var(--accent2);color:var(--bg)}
+  /* curator 导语：宣纸卡 + 朱砂题头 + 书法 */
+  .curator{background:linear-gradient(160deg,var(--card),rgba(63,111,79,.05));border:1px solid var(--line)}
+  .curator .ava{background:linear-gradient(135deg,var(--accent),var(--warn));border-radius:8px;font-family:var(--font-cn);font-size:22px;color:#f7f1e3}
+  .curator h1{font-family:var(--font-cn);font-size:30px;letter-spacing:3px;font-weight:400}
+  .curator .sub b{color:var(--accent2)}
+  .curator .label{color:var(--warn);border:1px solid rgba(184,137,59,.35);background:rgba(184,137,59,.08)}
+  /* 卡片细边框 + 衬线标题 + 书法字距 */
+  .v-name{font-family:var(--font-cn);font-size:19px;letter-spacing:1px}
+  .v-status{font-family:var(--font-cn)}
+  .s-ok{background:rgba(63,111,79,.1);color:var(--good);border:1px solid rgba(63,111,79,.3)}
+  .s-bad{background:rgba(168,58,44,.1);color:var(--bad);border:1px solid rgba(168,58,44,.3)}
+  .s-warn{background:rgba(184,137,59,.1);color:var(--warn);border:1px solid rgba(184,137,59,.3)}
+  .v-who .yes{background:rgba(63,111,79,.06);border:1px solid rgba(63,111,79,.22)}
+  .v-who .no{background:rgba(168,58,44,.06);border:1px solid rgba(168,58,44,.22)}
+  .v-who .yes b{color:var(--good)} .v-who .no b{color:var(--bad)}
+  .v-cmd{background:#efe7d4;border:1px solid var(--line);color:var(--accent2);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  [data-theme="dark"] .v-cmd{background:#0d1119;color:var(--accent2)}
+  .v-cmd .c{color:var(--muted)}
+  .v-copy:hover{border-color:var(--accent);color:var(--accent)}
+  .v-copy.done{background:rgba(63,111,79,.15);border-color:var(--good);color:var(--good)}
+  .al{background:rgba(168,58,44,.06);border:1px solid rgba(168,58,44,.22)}
+  .al .t{color:var(--bad)}
+  /* 右栏 */
+  .rail-card h4{font-family:var(--font-cn);color:var(--muted);letter-spacing:.5px}
+  .rail-chips a{border:1px solid var(--line);background:var(--card2)}
+  .rail-chips a:hover{border-color:var(--accent);color:var(--accent)}
+  .rail-stat .v{color:var(--accent2)}
+  .rail-cta{background:linear-gradient(135deg,var(--accent),var(--warn));color:#f7f1e3}
+  [data-theme="dark"] .rail-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg)}
+  .rail-links a{color:var(--accent2)}
+  .foot-issue{color:var(--accent2)}
+  /* AI 评价区：竹青题头 + 宣纸底 */
+  .ai-box{background:var(--card2);border:1px solid var(--line)}
+  .ai-toggle .ai-lbl{color:var(--accent2);font-family:var(--font-cn)}
+  .ai-summary b{color:var(--accent2)}
+  .ai-meta .m-yes{background:rgba(63,111,79,.07);border:1px solid rgba(63,111,79,.22)}
+  .ai-meta .m-no{background:rgba(168,58,44,.07);border:1px solid rgba(168,58,44,.22)}
+  .ai-risk{color:var(--warn);background:rgba(184,137,59,.07);border:1px solid rgba(184,137,59,.2)}
+  .ai-cmd-row code{color:var(--accent2);background:var(--bg);border:1px solid var(--line)}
+  /* 点赞 + 装包 */
+  .like-btn{border:1px solid var(--line);background:var(--card);color:var(--muted)}
+  .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .like-btn.liked{border-color:var(--accent);color:var(--accent);background:rgba(158,43,37,.08)}
+  .pack-out{background:var(--card2);border:1px solid var(--line);color:var(--muted)}
+  .pack-copy{background:var(--accent);color:#f7f1e3}
+  [data-theme="dark"] .pack-copy{background:var(--accent2);color:var(--bg)}
+  .rail-sub button{background:linear-gradient(135deg,var(--accent),var(--warn));color:#f7f1e3}
+  [data-theme="dark"] .rail-sub button{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg)}
+  /* 周榜 */
+  .rk li::before{background:var(--card2);border:1px solid var(--line);color:var(--muted)}
+  .rk li:nth-child(1)::before{background:var(--warn);color:#f7f1e3;border-color:var(--warn);font-weight:700}
+  .rk .st{color:var(--accent2)}
+
+  /* ===== 马赛克覆盖（像素） ===== */
+  [data-theme="mosaic"] body{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:16px 16px}
+  [data-theme="mosaic"] nav{background:#1a1d33;border-bottom:3px solid var(--accent)}
+  [data-theme="mosaic"] .brand .dot{background:repeating-linear-gradient(90deg,var(--accent) 0 4px,var(--accent2) 4px 8px);border-radius:0}
+  [data-theme="mosaic"] .brand b{color:var(--accent2)}
+  [data-theme="mosaic"] .nav-cta{background:var(--accent);color:#fff;border-radius:0}
+  [data-theme="mosaic"] .curator{background:var(--card);border:3px solid var(--line)}
+  [data-theme="mosaic"] .curator .ava{background:repeating-linear-gradient(45deg,var(--accent) 0 6px,var(--accent2) 6px 12px);border-radius:0}
+  [data-theme="mosaic"] .curator h1,[data-theme="mosaic"] .v-name,[data-theme="mosaic"] .v-status,[data-theme="mosaic"] .rail-card h4,[data-theme="mosaic"] .ai-toggle .ai-lbl{font-family:var(--font-cn);letter-spacing:1px}
+  [data-theme="mosaic"] .curator .label{color:var(--warn);border:2px solid var(--warn);background:transparent}
+  [data-theme="mosaic"] .s-ok{background:rgba(91,255,143,.15);color:var(--good);border:2px solid var(--good)}
+  [data-theme="mosaic"] .s-bad{background:rgba(255,91,91,.15);color:var(--bad);border:2px solid var(--bad)}
+  [data-theme="mosaic"] .s-warn{background:rgba(255,210,63,.15);color:var(--warn);border:2px solid var(--warn)}
+  [data-theme="mosaic"] .v-who .yes{background:rgba(91,255,143,.08);border:2px solid rgba(91,255,143,.4)}
+  [data-theme="mosaic"] .v-who .no{background:rgba(255,91,91,.08);border:2px solid rgba(255,91,91,.4)}
+  [data-theme="mosaic"] .v-cmd{background:#0e1020;border:2px solid var(--line);color:var(--accent2);border-radius:0}
+  [data-theme="mosaic"] .v-copy:hover{border-color:var(--accent);color:var(--accent)}
+  [data-theme="mosaic"] .v-copy.done{background:rgba(91,255,143,.2);border-color:var(--good);color:var(--good)}
+  [data-theme="mosaic"] .al{background:rgba(255,91,91,.08);border:2px solid rgba(255,91,91,.4)}
+  [data-theme="mosaic"] .al .t{color:var(--bad)}
+  [data-theme="mosaic"] .rail-card h4{color:var(--accent2);border-bottom:2px solid var(--line);padding-bottom:6px}
+  [data-theme="mosaic"] .rail-chips a{border:2px solid var(--line);background:var(--card2);border-radius:0}
+  [data-theme="mosaic"] .rail-chips a:hover{border-color:var(--accent);color:var(--accent)}
+  [data-theme="mosaic"] .rail-stat .v{color:var(--accent2)}
+  [data-theme="mosaic"] .rail-cta{background:var(--accent);color:#fff;border-radius:0}
+  [data-theme="mosaic"] .rail-links a{color:var(--accent2)}
+  [data-theme="mosaic"] .ai-box{background:var(--card2);border:3px solid var(--line)}
+  [data-theme="mosaic"] .ai-toggle .ai-lbl{color:var(--accent2)}
+  [data-theme="mosaic"] .ai-summary b{color:var(--accent2)}
+  [data-theme="mosaic"] .ai-meta .m-yes{background:rgba(91,255,143,.08);border:2px solid rgba(91,255,143,.4)}
+  [data-theme="mosaic"] .ai-meta .m-no{background:rgba(255,91,91,.08);border:2px solid rgba(255,91,91,.4)}
+  [data-theme="mosaic"] .ai-risk{color:var(--warn);background:rgba(255,210,63,.1);border:2px solid rgba(255,210,63,.4)}
+  [data-theme="mosaic"] .like-btn{border:2px solid var(--line);background:var(--card);color:var(--muted);border-radius:0}
+  [data-theme="mosaic"] .like-btn:hover{border-color:var(--accent);color:var(--accent)}
+  [data-theme="mosaic"] .like-btn.liked{border-color:var(--accent);color:var(--accent);background:rgba(255,62,165,.15)}
+  [data-theme="mosaic"] .pack-out{background:var(--card2);border:2px solid var(--line);color:var(--muted);border-radius:0}
+  [data-theme="mosaic"] .pack-copy{background:var(--accent);color:#fff;border-radius:0}
+  /* 马赛克 .meta .ic：透明底 + 字色硬描边 + 像素硬阴影（8-bit 印感） */
+  [data-theme="mosaic"] .meta .ic{border-radius:0;border:2px solid currentColor;background:transparent;box-shadow:3px 3px 0 var(--line);font-size:17px}
+  [data-theme="mosaic"] .meta .ic-ok{background:rgba(91,255,143,.18);color:var(--good);border-color:var(--good)}
+  [data-theme="mosaic"] .meta .ic-bad{background:rgba(255,91,91,.18);color:var(--bad);border-color:var(--bad)}
+  [data-theme="mosaic"] .meta .ic-ai{background:rgba(31,214,200,.18);color:var(--accent2);border-color:var(--accent2)}
+  [data-theme="mosaic"] .meta .ic-hot{background:rgba(255,210,63,.18);color:var(--warn);border-color:var(--warn)}
+  [data-theme="mosaic"] .meta .ic-news{background:rgba(255,62,165,.18);color:var(--accent);border-color:var(--accent)}
+  [data-theme="mosaic"] .meta .ic-sc{background:rgba(31,214,200,.18);color:var(--accent2);border-color:var(--accent2)}
+  /* 国风 .meta .ic：朱砂薄底 + 朱砂浅边，给宣纸一点染 */
+  .curator.theme-guofeng~* .meta .ic,
+  body[data-theme="guofeng"] .meta .ic,
+  html:not([data-theme]) .meta .ic{background:rgba(158,43,37,.05);border:1px solid rgba(158,43,37,.18)}
+  [data-theme="mosaic"] .rail-sub button{background:var(--accent);color:#fff;border-radius:0}
+  [data-theme="mosaic"] .rk li::before{background:var(--card2);border:2px solid var(--line);color:var(--muted);border-radius:0}
+  [data-theme="mosaic"] .rk li:nth-child(1)::before{background:var(--warn);color:#16182b;border-color:var(--warn);font-weight:700}
+  [data-theme="mosaic"] .rk .st{color:var(--accent2)}
+
+  /* ===== 马赛克图标体系（像素硬边） ===== */
+  [data-theme="mosaic"] .meta .ic{font-family:var(--font-cn);font-size:17px}
+  /* 暗夜图标字体回退无衬线（不被全局书法体覆盖） */
+  [data-theme="dark"] .meta .ic{font-family:var(--font-ui);font-weight:700}
+  /* 暗夜图标块：让 ok/bad/ai 在暗夜下用更"原风格"的表现，保留圆角+强化描边 */
+  [data-theme="dark"] .meta .ic{box-shadow:none}
+  [data-theme="mosaic"] .ava-seal{font-family:var(--font-cn);font-weight:700;color:#fff;background:var(--accent);border:2px solid #fff;border-radius:0;box-shadow:0 0 0 2px var(--accent)}
+  [data-theme="mosaic"] .warn-ico,[data-theme="mosaic"] .shot-ico{border-radius:0;border-width:2px}
+  [data-theme="mosaic"] .badge{border-width:2px;border-radius:0}
+  [data-theme="mosaic"] .like-btn .heart{font-weight:700}
+
+  /* ===== 国风图标体系（汉字/符号替代 emoji） ===== */
+  .meta .ic{font-family:var(--font-cn);font-size:18px;font-weight:600;color:var(--muted)}
+  .meta .ic-ok{color:var(--good)}
+  .meta .ic-bad{color:var(--bad)}
+  .meta .ic-ai{color:var(--accent2)}
+  .meta .ic-hot{color:var(--warn)}
+  .meta .ic-news{color:var(--accent)}
+  .meta .ic-sc{color:var(--accent2)}
+  /* 导语方印 */
+  .ava-seal{font-family:var(--font-cn);font-weight:700;color:#f7f1e3;background:var(--accent);border:1px solid rgba(0,0,0,.1)}
+  /* 风险/订阅小字标 */
+  .warn-ico{display:inline-block;font-family:var(--font-cn);font-size:11px;font-weight:600;color:var(--warn);background:rgba(184,137,59,.12);border:1px solid rgba(184,137,59,.3);border-radius:5px;padding:1px 6px;margin-right:4px;vertical-align:middle}
+  /* 截图待补标 */
+  .shot-ico{display:inline-block;font-family:var(--font-cn);font-size:12px;font-weight:600;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-right:6px}
+  /* 点赞·藏 */
+  .like-btn .heart{font-family:var(--font-cn);font-weight:600}
+  .like-btn.liked .heart{color:var(--accent)}
+  .like-btn.liked{border-color:var(--accent);color:var(--accent);background:rgba(158,43,37,.08)}
+  /* 场景 badge 三色 */
+  .badge{font-family:var(--font-cn)}
+  .badge-ok{color:var(--good);border:1px solid rgba(63,111,79,.3)}
+  .badge-warn{color:var(--warn);border:1px solid rgba(184,137,59,.3)}
+  .badge-ai{color:var(--accent2);border:1px solid rgba(63,111,79,.3)}
 </style>
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap">
-    <div class="brand">opc-ai-harness <small>一人公司 dsh 插件策展库</small></div>
-    <a class="cta" href="https://github.com/qianchuan-ai/opc-ai-harness" target="_blank" rel="noopener">GitHub 仓库</a>
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>DeepSeek Harness<b> 插件精选</b></div>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换主题">国风</button>
+      <span class="nav-tag">公益 · 独立实测</span>
+      <a href="https://github.com/qianchuan-ai/opc-ai-harness" class="nav-cta">GitHub 仓库 ↗</a>
+    </div>
   </div>
-</header>
+</nav>
 
-<div class="hero wrap">
-  <span class="tag">🤝 公益策展 · 不收费 · 真人实测</span>
-  <h1>开源下来<span class="hl">不一定好用</span><br/>我替你先踩坑</h1>
-  <div class="slogan">给一人公司 / OPC 主理人亲测过的 dsh 插件清单</div>
-  <div class="sub">不是壳、不是黄页——每个都装通过、踩过坑、写了批注，你照着装就行。英文索引站用 AI 自动点评，我这里每一个都是人肉装过。</div>
-  <div class="by">谦川 · AI宇宙狂想家 · 枢台出品 · 中文 dsh 主理人里少数真装过关的人</div>
-  <div class="btns">
-    <a class="btn primary" href="#plugins">看已亲测插件</a>
-    <a class="btn" href="#scenes">按场景选插件</a>
-    <a class="btn" href="#faces">加谦川私域</a>
-  </div>
+<div class="stage">
+
+  <!-- ===== FEED ===== -->
+  <main class="feed">
+
+    <!-- 导语 -->
+    <div class="curator">
+      <div class="ava ava-seal">鉴</div>
+      <div>
+        <h1>dsh 插件怎么选？真装过才说</h1>
+        <div class="sub">DeepSeek Harness 插件实测 · 9个真装 · AI评测覆盖全量 · 敢劝退</div>
+        <p>别搜「dsh 插件推荐」了——那些榜都是机器人拉的README目录。我<span style="color:var(--accent2);font-weight:700">亲手装过、踩过坑</span>的才写，标清楚适合谁、不适合谁、哪个别装。</p>
+        <span class="label"><span class="warn-ico">注意</span> 截至 dsh v0.1.0-rc.6 实测 · rc 阶段可能失效</span>
+      </div>
+    </div>
+
+    <!-- 合并卡 · dsh-at-file -->
+    <article class="item" id="dsh-at-file">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-at-file<small>0.6.2</small></span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">@ 引用文件/目录直接进上下文。写评论、调素材时把本地文件拖进对话，省掉一堆复制粘贴。我每天高频用。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>要喂本地文件/素材给 AI 的一人公司；写长文、做竞品拆解的人</div>
+          <div class="col no"><b>不适合</b>纯云端对话、不需要引用本地文件的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-at-file</span><button class="v-copy" data-cmd="dsh plugin add dsh-at-file">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> Windows 沙箱下 pnpm safe-delete 会报 trash aborted，清空 CODEBUDDY_SESSION_ID 可解</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>表面是「文件引用」，实质是把你的本地工作区变成 AI 的可寻址记忆。价值不在"能读文件"，而在"不用再手动搬运"——长文写作时素材随手 @，竞品拆解时截图/表格直接拖入，上下文连续性远高于复制粘贴。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>写长文时引用本地草稿/素材；做竞品拆解拖入截图与表格；调试时快速验证文件内容是否正确被读取。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>大文件（&gt;50MB）索引慢；Windows 沙箱下卸载会报 trash aborted（清空 CODEBUDDY_SESSION_ID 可解）。纯网页内容场景用 deepread 更顺。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-at-file</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-at-file" onclick="toggleLike(this, 'dsh-at-file')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-plan-execute -->
+    <article class="item" id="dsh-plan-execute">
+      <div class="meta"><div class="ic ic-bad">✕</div><div class="date">08-21</div><div class="typ">劝退</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-plan-execute</span>
+          <span class="v-status s-bad">劝退 · 真测</span>
+        </div>
+        <p class="v-quote">本想省 API、控成本，结果实测切换有延迟、规划质量不稳定。宣传吹得猛，真用起来鸡肋。新手别被带偏。</p>
+        <div class="v-who">
+          <div class="col yes"><b>仅适合</b>已经清楚自己要双模型路由、能容忍延迟的老手</div>
+          <div class="col no"><b>新手别碰</b>为了「省钱」装的，反而更费事</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-plan-execute</span><button class="v-copy" data-cmd="dsh plugin add dsh-plan-execute">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>定位是"双模型路由省 API 成本"——小模型做规划、大模型做执行。概念优雅，但 rc 阶段实测切换有延迟、规划质量抖动，省下的 token 钱远抵不过你反复重跑的时间。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>已明确要精细控 API 成本、且能容忍偶尔延迟波动的团队；长链任务想拆规划/执行两层。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>rc 阶段破坏性变更频繁，规划质量不稳定；新手被"省钱"噱头带偏反而更费事。建议等 v1 稳定。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-plan-execute</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-plan-execute" onclick="toggleLike(this, 'dsh-plan-execute')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · modlens -->
+    <article class="item" id="liustackmodlens">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">modlens<small>0.9.1</small></span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">图片/OCR/截图结构化，设计稿、图表、白板照都能拆成可引用元素。我做竞品拆解时高频用，比纯读图准。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>要拆解设计稿/数据图/截图的一人公司；内容、设计、研究岗</div>
+          <div class="col no"><b>不适合</b>只偶尔看一张图、不需要结构化提取的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add @liustack/modlens</span><button class="v-copy" data-cmd="dsh plugin add @liustack/modlens">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> 大图片 OCR 偶发超时，建议分批处理</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>不是"看图"，是"把图变成可引用的结构化数据"。设计稿拆成组件清单、数据图抽成表格、白板照转成待办——下游 AI 能直接消费，比丢一张图进去让模型"理解"可靠得多。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>竞品拆解要提取图表数据；设计稿转可编辑格式；大量截图批量结构化。和 dsh-at-file 配合读图体验最佳。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>超大图 OCR 偶发超时，分批可解；只处理纯文本没必要装。精度依赖源图清晰度。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add @liustack/modlens</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="@liustack/modlens" onclick="toggleLike(this, '@liustack/modlens')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-memory-evolve -->
+    <article class="item" id="dsh-memory-evolve">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-memory-evolve</span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">跨会话记住你的偏好和上下文，不用每次重新交代背景。一人公司主理人反复切换项目时最省心。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>长期和 dsh 协作、要它"记住你是谁"的人</div>
+          <div class="col no"><b>不适合</b>只在单次任务里用、不需要长期记忆的极简党</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-memory-evolve</span><button class="v-copy" data-cmd="dsh plugin add dsh-memory-evolve">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> rc 阶段存储格式可能变，建议定期备份 ~/.dsh/memory</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>解决 dsh 默认"对话结束即遗忘"的痛点。对一人公司主理人尤其值——你上午写小红书、下午跑竞品、晚上写周报，记忆插件让 dsh 跨这些切换记住你的口吻和项目背景，不用每次重交代。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>多轮对话连续工作；长周期项目上下文继承；一人公司反复切项目保偏好。和 dsh-at-file 是黄金搭档。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>rc 阶段存储格式可能变，旧记忆有失效风险；建议定期备份 ~/.dsh/memory 目录。单次极简任务没必要开。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-memory-evolve</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-memory-evolve" onclick="toggleLike(this, 'dsh-memory-evolve')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-turn-rewind -->
+    <article class="item" id="anionexdsh-turn-rewind">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-turn-rewind</span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">对话回放/时间线回溯，某一步跑偏了能退回去重来，不丢前面的上下文。调试 agent 流程时救命。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>常调 agent 流程、要可回溯的人</div>
+          <div class="col no"><b>不适合</b>只走直线单次问答、不需要回退的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add @anionex/dsh-turn-rewind</span><button class="v-copy" data-cmd="dsh plugin add @anionex/dsh-turn-rewind">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> 大对话历史可能卡顿，建议定期归档旧对话</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>给 dsh 加"撤销/时间线"。调试 agent 时某步跑偏，不用从头再来——退回去重跑那一步，前面上下文还在。对"试错成本高"的工作流是刚需，不是锦上添花。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>调试 agent 流程时定位跑偏的步骤；长对话里找回之前说过的方案；团队追溯决策链。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>大对话历史回溯可能卡顿；超长会话建议先归档再回溯。短问答场景用不上。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add @anionex/dsh-turn-rewind</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="@anionex/dsh-turn-rewind" onclick="toggleLike(this, '@anionex/dsh-turn-rewind')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-deepread -->
+    <article class="item" id="dsh-deepread">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-deepread</span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">网页/文件精读，长报告、长文、长图都能啃下来给摘要和要点。做行业研究时替代手动扒网页。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>做调研、要啃长文档/网页的人</div>
+          <div class="col no"><b>不适合</b>只看短内容、不需要深读的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-deepread</span><button class="v-copy" data-cmd="dsh plugin add dsh-deepread">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> 超大 PDF 可能内存溢出，建议分章节阅读</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>把"读长文"从人力活变成一句话的事。对做行业研究、读政策、扒竞品官网的人，它替代的是你手动滚动+划线+总结的时间 grind——给 URL 或文件，出来要点和关键条款。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>行业研究批量消化长文；政策文档提取关键条款；竞品官网快速摸清功能边界。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>超大 PDF 可能内存溢出，分章节喂更稳；纯截图场景用 modlens/at-file 更直接。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-deepread</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-deepread" onclick="toggleLike(this, 'dsh-deepread')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-agent-teams -->
+    <article class="item" id="dsh-agent-teams">
+      <div class="meta"><div class="ic"><span class="warn-ico">注意</span></div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-agent-teams</span>
+          <span class="v-status s-warn">过度设计 · 真测</span>
+        </div>
+        <p class="v-quote">多 agent 分工协作，一个总控拆任务分给子 agent。复杂项目一人顶一个小队时用，但编排成本不低。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>复杂任务要并行分工、能接受编排学习曲线的人</div>
+          <div class="col no"><b>不适合</b>任务简单、不想管多个 agent 的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-agent-teams</span><button class="v-copy" data-cmd="dsh plugin add dsh-agent-teams">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>多 agent 分工框架，愿景是"一人顶一队"。但实测编排是有成本的——你要先想清楚怎么拆、怎么交接上下文，否则子 agent 互相甩锅。对一人公司，多数时候单 agent + 好 prompt 更省心。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>大型项目确实要并行处理多个子任务；有现成分工模板可复用。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>编排成本高，一人公司极易过度设计；rc 阶段破坏性变更频繁。先用单 agent 验证跑通再考虑它。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-agent-teams</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-agent-teams" onclick="toggleLike(this, 'dsh-agent-teams')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-tui -->
+    <article class="item" id="dsh-tui">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-tui</span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">终端里的可视化界面，键盘流管理插件和会话。不喜欢网页端、常驻终端的人顺手。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>终端党、键盘流、不想开浏览器的人</div>
+          <div class="col no"><b>不适合</b>要图形界面、鼠标点选的人（用 dsh-web-ui）</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-tui</span><button class="v-copy" data-cmd="dsh plugin add dsh-tui">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> 依赖 termion，Windows 支持不稳定，GUI 党用 web-ui</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>给 dsh 套一层终端 UI，键盘流管理插件/会话。价值在于"不离开终端"——常驻命令行的主理人不用切浏览器就能看状态、切会话。和 web-ui 是两条路线，按你的工作环境选。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>不喜欢网页端；终端工作环境；快捷键高效管理插件和会话。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>依赖 termion，Windows 下支持不稳定；GUI/鼠标党直接用 dsh-web-ui 更顺。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-tui</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-tui" onclick="toggleLike(this, 'dsh-tui')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-skin -->
+    <article class="item" id="dsh-skin">
+      <div class="meta"><div class="ic ic-ok">✓</div><div class="date">08-22</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-skin<small>像素风</small></span>
+          <span class="v-status s-ok">装 · 真测</span>
+        </div>
+        <p class="v-quote">给 dsh 界面换肤，内置像素/Coding/海洋/星夜/卡哇伊等。默认我选像素风——复古不花哨，长时间看不累。</p>
+        <div class="v-shot"><span class="shot-ico">图</span> 实测截图待补 · 真装证据陆续补上</div>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>看腻默认界面、想要个性化工位的人</div>
+          <div class="col no"><b>不适合</b>只在意功能、不在乎外观的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-skin</span><button class="v-copy" data-cmd="dsh plugin add dsh-skin">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> 部分主题与深色模式兼容性有问题</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>纯体验型插件，不改变能力只改观感。对"每天盯界面 8 小时"的主理人，一个不刺眼的主题（我选像素风）能降低视觉疲劳——属于"小但天天受益"的那类。别指望它提升生产力，图个顺眼。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>个性化工位；喜欢复古/特定视觉风格；长时段使用想减轻疲劳。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>部分主题与深色模式兼容性有问题；渲染增加少量性能开销。只在意功能的人没必要装。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-skin</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-skin" onclick="toggleLike(this, 'dsh-skin')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-library -->
+    <article class="item" id="dsh-library">
+      <div class="meta"><div class="ic"><span class="warn-ico">注意</span></div><div class="date">08-18</div><div class="typ">真测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-library<small>0.1.0</small></span>
+          <span class="v-status s-warn">能用 · 有坑</span>
+        </div>
+        <p class="v-quote">本地优先文档知识库 RAG，数据不出本机，敏感资料首选。但索引大文件夹时偶尔卡，先小范围试。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>内部文档、敏感资料做知识库，怕数据出本机的人</div>
+          <div class="col no"><b>注意</b>超大资料库索引慢，等官方优化</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-library</span><button class="v-copy" data-cmd="dsh plugin add dsh-library">复制</button></div>
+        <div class="v-risk"><span class="warn-ico">注意</span> 超大文件夹索引卡顿，建议 ≤1000 文件</div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>本地 RAG 知识库，主打"敏感资料不出本机"。对一人公司做合同/客户资料库是真需求——比丢给云端更安心。但当前是 rc 早期，索引引擎还没优化，大库会卡，属于"方向对、成熟度低"。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>本地文档库检索；政策/合同等敏感资料管理；离线环境使用。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>超大文件夹（&gt;1000 文件）索引卡顿；小资料库直接用 dsh-at-file 更简单。等官方优化索引再重度用。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-library</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-library" onclick="toggleLike(this, 'dsh-library')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-web-ui -->
+    <article class="item" id="dsh-web-ui">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-web-ui</span>
+          <span class="v-status s-ok">装 · AI评测</span>
+        </div>
+        <p class="v-quote">给 dsh 套一层网页界面，浏览器里点选插件、看对话历史、管配置，不用敲命令行。一人公司主理人零门槛上手的首选入口。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>不想碰终端、要可视化管插件和工作流的人</div>
+          <div class="col no"><b>不适合</b>纯命令行老手，或只跑单次任务的极简党</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-web-ui</span><button class="v-copy" data-cmd="dsh plugin add dsh-web-ui">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>dsh 的"门面"。对小白/一人公司主理人，它是零门槛入口——不用记命令就能装插件、看历史。GitHub 星标最高也说明大众要的就是这个。但本质是 CLI 的皮，底层还是命令行那套。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>零命令行基础想用 dsh；可视化管插件和工作流；团队协作给非技术成员用。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>和 CLI 命令并存容易混淆"到底在哪操作"；老手会觉得多一层没必要。CLI 熟练者直接 add 更快。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-web-ui</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-web-ui" onclick="toggleLike(this, 'dsh-web-ui')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · dsh-cost-meter -->
+    <article class="item" id="dsh-cost-meter">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">dsh-cost-meter</span>
+          <span class="v-status s-warn">观望 · AI评测</span>
+        </div>
+        <p class="v-quote">实时盯着每次对话花多少 token/钱。概念好，但 rc 阶段接口常变，装了可能下个版本就报错。建议等 v1 稳定再上。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>成本敏感、跑量大的工作室，能接受跟着版本调</div>
+          <div class="col no"><b>不适合</b>怕折腾、要开箱稳的人，现在装容易踩版本坑</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add dsh-cost-meter</span><button class="v-copy" data-cmd="dsh plugin add dsh-cost-meter">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>成本可视化的"仪表盘"。对跑量、怕月底账单爆炸的工作室是真需求——知道每次调用烧多少，才能控预算。但 rc 阶段它自己接口都稳不住，现在装等于给自己加监控还得天天修。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>控预算看账单；长期高频调用要追踪成本；团队分摊费用。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>rc 阶段接口常变，报错概率高；免费额度够用的人装它纯添堵。等 v1 稳定再上。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add dsh-cost-meter</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="dsh-cost-meter" onclick="toggleLike(this, 'dsh-cost-meter')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · treg -->
+    <article class="item" id="treg">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">treg</span>
+          <span class="v-status s-ok">装 · AI评测</span>
+        </div>
+        <p class="v-quote">正则/模板驱动的轻量任务编排，适合把重复流程固化成可复用规则。看文档定位是"小工具粘合层"。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>想把固定流程脚本化、少写胶水代码的人</div>
+          <div class="col no"><b>不适合</b>流程多变、要智能决策的场景（用 agent-teams）</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add treg</span><button class="v-copy" data-cmd="dsh plugin add treg">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>和 agent-teams 的"智能编排"相反，treg 是"呆板但可靠"的正则/模板编排——把重复流程固化成规则。对一人公司，你那些每周都一样的操作（整理周报、批量重命名）用它比养一个 agent 更可控、更不抽风。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>固定流程脚本化；少写胶水代码；规则明确的批处理任务。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>包名/接口有变更风险，装前确认当前包名；流程多变、要智能判断的场景它搞不定，换 agent-teams。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add treg</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="treg" onclick="toggleLike(this, 'treg')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · srt-whiteboard-animation -->
+    <article class="item" id="srt-whiteboard-animation">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">srt-whiteboard-animation</span>
+          <span class="v-status s-warn">观望 · AI评测</span>
+        </div>
+        <p class="v-quote">把字幕/脚本转手绘白板动画，内容创作向。rc 阶段接口和依赖不稳，装了可能要跟着调。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>做知识类短视频、要自动化出白板动画的人</div>
+          <div class="col no"><b>不适合</b>要稳定出片、怕折腾的（等 v1）</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add srt-whiteboard-animation</span><button class="v-copy" data-cmd="dsh plugin add srt-whiteboard-animation">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>踩中你"AI漫剧/短视频"赛道的一个点——字幕/脚本自动转手绘白板动画。对做知识类口播的人，它把"写稿→画动画"的脏活自动化。但现在是 rc，依赖链不稳，等于你内容流水线卡在一个会随时断的环节上。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>知识类短视频自动化出白板动画；教程演示视频批量生成。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>生成速度慢、长视频易超时；rc 依赖不稳，装了要跟着调。要稳定出片等 v1。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add srt-whiteboard-animation</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="srt-whiteboard-animation" onclick="toggleLike(this, 'srt-whiteboard-animation')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · agency-agents-zh -->
+    <article class="item" id="agency-agents-zh">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">agency-agents-zh</span>
+          <span class="v-status s-ok">装 · AI评测</span>
+        </div>
+        <p class="v-quote">中文语境的多 agent 协作模板集，开箱有中文 prompt 范式。比 agent-teams 更偏"预制角色"。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>想直接套中文 agent 分工模板、不想自己写 prompt 的人</div>
+          <div class="col no"><b>不适合</b>要高度自定义编排逻辑的老手</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add agency-agents-zh</span><button class="v-copy" data-cmd="dsh plugin add agency-agents-zh">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>agent-teams 的"中文预制版"——不用自己从零写 prompt，开箱就是一套中文 agent 分工范式。对不想折腾编排、想直接套模板的人省时间。代价是灵活度低，模板不合你意时改起来比自己写还别扭。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>直接套中文 agent 分工模板；快速搭多角色协作原型；不想写 prompt 的人。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>生态小、更新频率低、社区支持弱；要高度自定义编排的老手会觉得束手束脚。主流需求用官方生态更稳。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add agency-agents-zh</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="agency-agents-zh" onclick="toggleLike(this, 'agency-agents-zh')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · yichen-x-slicer -->
+    <article class="item" id="yichen-x-slicer">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">yichen-x-slicer</span>
+          <span class="v-status s-warn">观望 · AI评测</span>
+        </div>
+        <p class="v-quote">长文/长任务切片器，把大块内容拆成可处理单元。定位清晰但 rc 阶段维护频率未知。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>常处理超长文档、要自动分段喂模型的人</div>
+          <div class="col no"><b>不适合</b>内容都在短上下文里就能解决的人</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add yichen-x-slicer</span><button class="v-copy" data-cmd="dsh plugin add yichen-x-slicer">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>长上下文的"预处理层"——把你的大块内容（长文/长视频稿）切成分段，喂给模型才不会爆窗口。和你做播客切片/短视频的工作流直接相关，是内容生产的 plumbing。但维护频率未知，rc 可能哪天就不更了。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>超长文档自动分段；播客/长视频稿切片预处理；喂模型前先做单元化。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>维护频率未知，rc 阶段可能停更；依赖 ffmpeg，Windows 路径可能有坑。短内容场景用不上。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add yichen-x-slicer</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="yichen-x-slicer" onclick="toggleLike(this, 'yichen-x-slicer')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 合并卡 · 矩媒MatrixMedia -->
+    <article class="item" id="矩媒MatrixMedia">
+      <div class="meta"><div class="ic ic-ai">墨</div><div class="date">08-22</div><div class="typ">AI 评测</div></div>
+      <div class="body">
+        <div class="v-head">
+          <span class="v-name">矩媒MatrixMedia</span>
+          <span class="v-status s-warn">观望 · AI评测</span>
+        </div>
+        <p class="v-quote">多平台内容分发/媒体管理向，ToS 灰区需注意。AI 读文档判断：功能诱人但合规风险要自担。</p>
+        <div class="v-who">
+          <div class="col yes"><b>适合谁</b>做多平台内容矩阵、能判断平台规则边界的人</div>
+          <div class="col no"><b>不适合</b>怕账号风险、要合规稳妥的个人号</div>
+        </div>
+        <div class="v-cmd"><span class="cmd-text"><span class="c"># 安装</span> dsh plugin add MatrixMedia</span><button class="v-copy" data-cmd="dsh plugin add MatrixMedia">复制</button></div>
+        <div class="card-foot"><a href="https://github.com/qianchuan-ai/opc-ai-harness/issues" class="foot-issue">你装过？踩坑来提 Issue，一起把实测做准 ↗</a></div>
+        <div class="ai-box">
+          <div class="ai-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <span class="ai-lbl">AI 深度评测</span>
+            <span class="ai-hint">展开分析</span>
+            <span class="ai-arrow">▼</span>
+          </div>
+          <div class="ai-inner">
+            <div class="ai-summary" data-ai="summary"><b>核心价值</b><br>踩中你"多平台内容矩阵"的诉求——一键分发到各平台、集中管理媒体。功能诱人，但卡在 ToS 灰区：平台明令禁止批量无差别分发，用了有被限流/封号风险。对一人公司，账号就是资产，冒这个险得想清楚。</div>
+            <div class="ai-meta">
+              <div class="m-yes" data-ai="yes"><b>使用场景</b>多平台运营、能判断各平台规则边界的成熟矩阵号。</div>
+              <div class="m-no" data-ai="no"><b>真实风险</b>ToS 灰区，可能被限流甚至封号；个人号、合规优先的号别碰。风险自担。</div>
+            </div>
+            <div class="ai-cmd-row"><code>dsh plugin add MatrixMedia</code></div>
+          </div>
+        </div>
+        <div class="item-foot"><button class="like-btn" data-plugin="矩媒MatrixMedia" onclick="toggleLike(this, '矩媒MatrixMedia')"><span class="heart">藏</span> <span class="count">0</span></button></div>
+        <div class="item-fati" aria-hidden="true"></div>
+      </div>
+    </article>
+
+    <!-- 场景合集 · 读图锚点 -->
+    <article class="item" id="sc-read">
+      <div class="meta"><div class="ic ic-sc" data-ic="set">集</div><div class="date">08-20</div><div class="typ">场景</div></div>
+      <div class="body sc">
+        <h3>想让 dsh 看得懂图？这 3 个我验过</h3>
+        <p class="lead">不是所有「读图」插件都好用，按我的实测排个序：</p>
+        <div class="sc-row">
+          <div class="sc-mini"><div class="n">modlens</div><div class="d">图片/OCR/截图结构化，设计稿拆解首选</div><span class="badge badge-ok">真测推荐</span></div>
+          <div class="sc-mini"><div class="n">dsh-at-file</div><div class="d">配合文件引用顺手读图，日常够用</div><span class="badge badge-ok">真测</span></div>
+          <div class="sc-mini"><div class="n">dsh-deepread</div><div class="d">网页/文件精读，长图也能啃</div><span class="badge badge-ok">真测</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 场景速查总览 -->
+    <article class="item" id="sc-overview">
+      <div class="meta"><div class="ic ic-sc" data-ic="doc">档</div><div class="date">08-20</div><div class="typ">场景</div></div>
+      <div class="body sc">
+        <h3>9 大场景，逐个告诉你装哪个</h3>
+        <p class="lead">右侧场景速查点任一切片直达。下面先放「本地知识库」示范，其余场景卡陆续铺——每卡都标「真测/AI评测」和适合谁。</p>
+        <div class="sc-row">
+          <div class="sc-mini" id="sc-kb"><div class="n">本地知识库</div><div class="d">dsh-library：本地优先 RAG，敏感资料不出本机（<span class="warn-ico">注意</span> 大文件夹索引慢）</div><span class="badge badge-warn">真测·有坑</span></div>
+          <div class="sc-mini" id="sc-memory"><div class="n">长记忆</div><div class="d">dsh-memory-evolve：跨会话记住偏好，一人公司省重复交代</div><span class="badge badge-ok">真测</span></div>
+          <div class="sc-mini" id="sc-research"><div class="n">深度调研</div><div class="d">dsh-deepread：网页/文件精读，长报告拆解</div><span class="badge badge-ok">真测</span></div>
+        </div>
+        <div class="sc-row" style="margin-top:10px">
+          <div class="sc-mini" id="sc-search"><div class="n">联网搜索</div><div class="d">ddgs 类插件：不翻墙搜资料，中文主理人刚需</div><span class="badge badge-ai">AI评测</span></div>
+          <div class="sc-mini" id="sc-cost"><div class="n">成本控制</div><div class="d">dsh-cost-meter：盯 token/花费，rc 阶段观望</div><span class="badge badge-ai">观望</span></div>
+          <div class="sc-mini" id="sc-voice"><div class="n">语音多模态</div><div class="d">语音输入输出插件：口播/会议转写场景</div><span class="badge badge-ai">AI评测</span></div>
+          <div class="sc-mini" id="sc-auto"><div class="n">自动化</div><div class="d">dsh-turn-rewind / dsh-agent-teams：回放与多 agent 协作</div><span class="badge badge-ok">真测</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 劝退快讯 -->
+    <article class="item" id="card18">
+      <div class="meta"><div class="ic ic-news">讯</div><div class="date">08-19</div><div class="typ">快讯</div></div>
+      <div class="body">
+        <div class="al">
+          <div class="t"><span class="warn-ico">注意</span> rc 阶段破坏性变更预警</div>
+          <p>dsh 还在 v0.1.0-rc.6，官方明说未来有破坏性变更。所有「装通」结论我都标了版本号，哪天跑不通了先别骂我——去 GitHub 提 issue 告诉我。</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 周榜 -->
+    <article class="item" id="card19">
+      <div class="meta"><div class="ic ic-hot">热</div><div class="date">本周</div><div class="typ">周榜</div></div>
+      <div class="body rk">
+        <h3><span class="ic-hot">热</span> GitHub 周榜 · dsh 生态热门</h3>
+        <ol id="rank-list">
+          <li><span class="nm">zhu1090093659/dsh-web-ui</span><span class="st">★ 5429</span></li>
+          <li><span class="nm">liustack/modlens</span><span class="st">★ 3499</span></li>
+          <li><span class="nm">FSMargoo/dsh-at-file</span><span class="st">★ 449</span></li>
+          <li><span class="nm">csyangwen/dsh-memory-evolve</span><span class="st">★ 215</span></li>
+          <li><span class="nm">Han-1413141/dsh-cost-meter</span><span class="st">★ 146</span></li>
+        </ol>
+        <p id="rank-note" style="font-size:12px;color:var(--muted);margin-top:8px">★=收藏数 · 正在实时拉 GitHub API…</p>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- ===== RIGHT RAIL ===== -->
+  <aside class="rail">
+    <div class="rail-card" id="cta">
+      <h4>公益实测 · 关于</h4>
+      <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:12px">独立开源实测，<b style="color:var(--text)">不恰饭、不接推广</b>。插件分两层评：<b style="color:var(--text)">AI评测</b>（读官方文档逐条排雷，覆盖广）＋ <b style="color:var(--text)">真装实测</b>（我亲手跑通、有证据的少数）。两种都标清楚，不混。</p>
+      <a href="https://github.com/qianchuan-ai/opc-ai-harness" class="rail-cta">GitHub 仓库 · 指正/补充 ↗</a>
+      <div class="rail-links">
+        <a href="https://cn.bing.com/search?q=AI%E5%AE%87%E5%AE%99%E7%8B%82%E6%83%B3%E8%80%85" target="_blank" rel="noopener">搜索 · AI宇宙狂想者 ↗</a>
+      </div>
+    </div>
+    <div class="rail-card">
+      <h4>场景速查</h4>
+      <div class="rail-chips">
+        <a href="#sc-read">读图</a><a href="#sc-overview">本地知识库</a><a href="#sc-research">深度调研</a><a href="#sc-memory">长记忆</a><a href="#sc-search">联网搜索</a><a href="#sc-cost">成本控制</a><a href="#sc-voice">语音多模态</a><a href="#sc-auto">自动化</a>
+      </div>
+    </div>
+    <div class="rail-card" id="pack-panel">
+      <h4>一键安装包</h4>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px">勾选要装的插件，自动拼好安装命令，复制粘贴即可。AI 原生思路：内容随你选，不写死。</p>
+      <div class="pack-list" style="display:flex;flex-direction:column;gap:6px;max-height:260px;overflow:auto;margin-bottom:10px"></div>
+      <div class="pack-out" style="font-family:var(--font-mono,monospace);font-size:12px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:10px;color:var(--muted);white-space:pre-wrap;word-break:break-all;min-height:42px"></div>
+      <button class="pack-copy" style="display:none;margin-top:8px;background:var(--accent2);color:var(--bg);border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer">复制命令</button>
+    </div>
+    <div class="rail-card">
+      <h4>实测数据</h4>
+      <div class="rail-stat"><span>真装实测</span><span class="v">9</span></div>
+      <div class="rail-stat"><span>AI 评测覆盖</span><span class="v">17</span></div>
+      <div class="rail-stat"><span>收录插件</span><span class="v">18</span></div>
+      <div class="rail-stat"><span>更新于</span><span class="v">08-22</span></div>
+    </div>
+    <div class="rail-card">
+      <h4>实测周报</h4>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:4px">每周一封 dsh 实测更新 + rc 踩坑预警。公益免费，随时退订。</p>
+      <p class="rail-soon"><span class="warn-ico">讯</span> 订阅通道即将上线 · 现可先 <a href="https://github.com/qianchuan-ai/opc-ai-harness" style="color:var(--accent2)">Watch 仓库</a> 收更新</p>
+    </div>
+  </aside>
+
 </div>
 
-<section id="scenes" class="wrap">
-  <h2>按<span class="k">场景</span>选插件</h2>
-  <p class="lead">不同任务对应不同插件，先定位你的场景，再选工具。</p>
+<!-- 国风·法帖装饰带（仅国风主题显示） -->
+<div class="fati" aria-hidden="true">
+  <div class="fati-col"><b>择</b>善而装</div>
+  <div class="fati-col"><b>独</b>立实测</div>
+  <div class="fati-seal">不劝装·只劝退</div>
+  <div class="fati-col"><b>踩</b>过方信</div>
+  <div class="fati-col"><b>信</b>而后荐</div>
+</div>
 
-  <table class="scene-table">
-    <thead>
-      <tr><th>你的场景</th><th>推荐插件</th><th>状态</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>丢文档/链接给 agent，让它读透再回答</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-deepread.md" class="plugin-link">dsh-deepread</a></td>
-        <td><span class="badge b-ok">✅ 8.3s 装通</span></td>
-      </tr>
-      <tr>
-        <td>本地知识库，数据不出本机</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-library.md" class="plugin-link">dsh-library</a></td>
-        <td><span class="badge b-warn">⚠️ 需 allowBuilds</span></td>
-      </tr>
-      <tr>
-        <td>做深度调研/竞品分析/多源综合</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-deep-research.md" class="plugin-link">dsh-deep-research</a></td>
-        <td><span class="badge b-warn">⚠️ web 不可用（需 headless/tui）</span></td>
-      </tr>
-      <tr>
-        <td>把任务分派给多个 agent 并行</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-agent-teams.md" class="plugin-link">dsh-agent-teams</a></td>
-        <td><span class="badge b-ok">✅ 1m9s 装通</span></td>
-      </tr>
-      <tr>
-        <td>AI 越用越懂你，跨会话复用上下文</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/dsh-memory-evolve.md" class="plugin-link">dsh-memory-evolve</a></td>
-        <td><span class="badge b-ok">✅ 1m34s 装通</span></td>
-      </tr>
-      <tr>
-        <td>改坏了能退回上一步</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/" class="plugin-link">dsh-turn-rewind</a></td>
-        <td><span class="badge b-ok">✅ 8.2s 装通</span></td>
-      </tr>
-      <tr>
-        <td>图片/截图结构化解析</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/modlens.md" class="plugin-link">modlens</a></td>
-        <td><span class="badge b-ok">✅ Win 有 bin 警告</span></td>
-      </tr>
-      <tr>
-        <td>外部接口目录检索（研究向）</td>
-        <td><a href="https://github.com/qianchuan-ai/opc-ai-harness/blob/main/reviews/treg.md" class="plugin-link">treg</a></td>
-        <td><span class="badge b-warn">⚠️ 需免费 TREG_TOKEN</span></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="foot">
+  © 2026 谦川 · AI宇宙狂想者 · 独立实测 · 数据来源 GitHub dsh-plugin topic + Search API · 收录不代表推荐，安装风险自负
+</div>
 
-  <div class="similar">
-    <h3>同类插件推荐（同场景备选）</h3>
-    <ul>
-      <li>内容精读 → 先用 <strong>dsh-deepread</strong>，复杂研究再升级 deep-research</li>
-      <li>多 Agent 协作 → <strong>dsh-agent-teams</strong> + agency-agents 角色库（待测）</li>
-      <li>本地知识库 → <strong>dsh-library</strong>（需 allowBuilds 白名单）</li>
-      <li>省 Token 写作 → 装 Ponytail 在 Claude Code/Cursor 里（非 dsh 插件）</li>
-    </ul>
-  </div>
-</section>
+<script>
+(function(){
+  var repos = [
+    "omdsh-dev/dsh-at-file",
+    "liustack/modlens",
+    "csyangwen/dsh-memory-evolve",
+    "Anionex/dsh-turn-rewind",
+    "xiehuan123/dsh-deepread",
+    "zhu1090093659/dsh-web-ui",
+    "ccch1mneyyy/dsh-tui",
+    "goodpostidea-tech/deepseek-harness-skin",
+    "Han-1413141/dsh-cost-meter"
+  ];
+  var note = document.getElementById('rank-note');
+  var list = document.getElementById('rank-list');
+  var FAIL = '★=收藏数 · 实时拉取失败，显示示例数据 · 但榜上很多我没装过，标了才信';
+  Promise.all(repos.map(function(r){
+    return fetch('https://api.github.com/repos/'+r, {headers:{'Accept':'application/vnd.github+json'}})
+      .then(function(res){ if(!res.ok) throw new Error(r); return res.json(); })
+      .then(function(d){ return {name:r, stars:d.stargazers_count, url:d.html_url}; })
+      .catch(function(){ return null; });
+  })).then(function(results){
+    var ok = results.filter(Boolean);
+    if(ok.length === 0){ if(note) note.textContent = FAIL; return; }
+    ok.sort(function(a,b){ return b.stars - a.stars; });
+    var top = ok.slice(0,8);
+    list.innerHTML = top.map(function(it){
+      return '<li><a href="'+it.url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="nm">'+it.name+'</span><span class="st">★ '+it.stars+'</span></a></li>';
+    }).join('');
+    if(note) note.textContent = '★=收藏数 · 实时拉 GitHub API（刚刚更新）· 但榜上很多我没装过，标了才信';
+  }).catch(function(){ if(note) note.textContent = FAIL; });
+})();
 
-<section id="plugins" class="wrap">
-  <h2>已亲测<span class="k">插件</span></h2>
-  <p class="lead">全部实装复核，标注实测版本。<span class="badge b-ok">✅ 认</span> 实测好用 · <span class="badge b-warn">⚠️ 存疑</span> 有门槛 · <span class="badge b-no">❌ 否</span> 不推荐 · <span class="badge b-warn">🕒 待真装</span> 仅理论审查。</p>
-  <div class="cards">
+// 图标内容按主题区分（国风汉字 / 暗夜几何字母 / 马赛克像素块）
+var ICON_MAP = {
+  guofeng: { ok:'✓', bad:'✕', ai:'墨', hot:'热', news:'讯', sc:'集', sc2:'档', seal:'鉴', heart:'藏', warn:'注意', shot:'图' },
+  dark:    { ok:'✓', bad:'✕', ai:'◆', hot:'✦', news:'⚡', sc:'▦', sc2:'▤', seal:'⌘', heart:'♥', warn:'WARN', shot:'◇' },
+  mosaic:  { ok:'▣', bad:'▤', ai:'✚', hot:'▲', news:'▼', sc:'■', sc2:'□', seal:'◈', heart:'★', warn:'!', shot:'▣' }
+};
+function renderIcons(theme){
+  var m = ICON_MAP[theme] || ICON_MAP.guofeng;
+  document.querySelectorAll('.meta .ic').forEach(function(el){
+    if(el.classList.contains('ic-ok')) el.textContent = m.ok;
+    else if(el.classList.contains('ic-bad')) el.textContent = m.bad;
+    else if(el.classList.contains('ic-ai')) el.textContent = m.ai;
+    else if(el.classList.contains('ic-hot')) el.textContent = m.hot;
+    else if(el.classList.contains('ic-news')) el.textContent = m.news;
+    else if(el.classList.contains('ic-sc')) el.textContent = (el.getAttribute('data-ic') === 'doc') ? m.sc2 : m.sc;
+  });
+  var seal = document.querySelector('.ava-seal'); if(seal) seal.textContent = m.seal;
+  document.querySelectorAll('.like-btn .heart').forEach(function(el){ if(!el.closest('.like-btn').classList.contains('liked')) el.textContent = m.heart; });
+  document.querySelectorAll('.warn-ico').forEach(function(el){ el.textContent = m.warn; });
+  document.querySelectorAll('.shot-ico').forEach(function(el){ el.textContent = m.shot; });
+}
 
-    <div class="pc featured">
-      <div class="top"><span class="name">dsh-at-file</span><span class="ver">@0.6.2</span></div>
-      <div class="fn">@ 引用文件 / 目录进上下文</div>
-      <div class="use">丢文档给 agent，免复制粘贴。写评论、回消息前先把素材喂进去。</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m51s 装通</span></div>
-    </div>
+// 主题切换（国风 / 暗夜 / 马赛克），记忆偏好
+(function(){
+  var BTN = 'themeBtn';
+  var ORDER = ['guofeng','dark','mosaic'];
+  var LABEL = {guofeng:'国风',dark:'暗夜',mosaic:'马赛克'};
+  function apply(theme){
+    if(theme === 'guofeng'){ document.documentElement.removeAttribute('data-theme'); }
+    else { document.documentElement.setAttribute('data-theme', theme); }
+    var btn = document.getElementById(BTN);
+    if(btn) btn.textContent = LABEL[theme] || '国风';
+    renderIcons(theme);
+  }
+  var saved = null;
+  try{ saved = localStorage.getItem('dsh-theme'); }catch(e){}
+  // 默认马赛克；无 saved 或非法值才回退 mosaic
+  apply(ORDER.indexOf(saved) >= 0 ? saved : 'mosaic');
+  window.toggleTheme = function(){
+    var curAttr = document.documentElement.getAttribute('data-theme');
+    var cur = (curAttr && ORDER.indexOf(curAttr) >= 0) ? curAttr : 'guofeng';
+    var next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+    apply(next);
+    try{ localStorage.setItem('dsh-theme', next); }catch(e){}
+  };
+})();
 
-    <div class="pc featured">
-      <div class="top"><span class="name">dsh-deepread</span><span class="ver">latest</span></div>
-      <div class="fn">网页 / 文件 / 文本精读（内容抓取合规源）</div>
-      <div class="use">内容研究、竞品拆解、长文归纳。替代小红书/公众号抓取的合规方案——不碰平台 ToS。</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">8.3s 装通 · 零编译</span></div>
-    </div>
+// 一键复制安装命令
+(function(){
+  var btns = document.querySelectorAll('.v-copy');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var cmd = b.getAttribute('data-cmd') || '';
+      var done = function(){ b.textContent='已复制'; b.classList.add('done'); setTimeout(function(){ b.textContent='复制'; b.classList.remove('done'); }, 1600); };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(cmd).then(done).catch(function(){ fallback(cmd, done); });
+      } else { fallback(cmd, done); }
+    });
+  });
+  function fallback(cmd, done){
+    var ta=document.createElement('textarea'); ta.value=cmd; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+})();
 
-    <div class="pc">
-      <div class="top"><span class="name">modlens</span><span class="ver">@3.18.1</span></div>
-      <div class="fn">图片 / OCR / 截图结构化解析</div>
-      <div class="use">贴设计稿截图让 agent 读懂，做 UI 评审、竞品界面分析时省时间。</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span class="badge b-warn" style="margin-left:6px">⚠️ Win bin 警告</span></div>
-    </div>
+// 点赞功能（localStorage持久化）
+(function(){
+  var STORAGE_KEY = 'dsh-plugin-likes';
+  function curTheme(){ var a=document.documentElement.getAttribute('data-theme'); return (a==='dark'||a==='mosaic')?a:'guofeng'; }
+  function getLikes(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; }
+  }
+  function setLikes(data){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+  window.toggleLike = function(btn, plugin){
+    var likes = getLikes();
+    var current = likes[plugin] || 0;
+    if(btn.classList.contains('liked')){
+      btn.classList.remove('liked');
+      btn.querySelector('.heart').textContent = ICON_MAP[curTheme()].heart;
+      likes[plugin] = Math.max(0, current - 1);
+    }else{
+      btn.classList.add('liked');
+      btn.querySelector('.heart').textContent = ICON_MAP[curTheme()].heart;
+      likes[plugin] = current + 1;
+    }
+    setLikes(likes);
+    btn.querySelector('.count').textContent = likes[plugin];
+  };
+  // 初始化：恢复之前的点赞状态
+  document.querySelectorAll('.like-btn').forEach(function(btn){
+    var plugin = btn.getAttribute('data-plugin');
+    var likes = getLikes();
+    var count = likes[plugin] || 0;
+    btn.querySelector('.count').textContent = count;
+    if(count > 0){
+      btn.classList.add('liked');
+      btn.querySelector('.heart').textContent = ICON_MAP[curTheme()].heart;
+    }
+  });
+})();
 
-    <div class="pc">
-      <div class="top"><span class="name">dsh-turn-rewind</span><span class="ver">@0.1.1</span></div>
-      <div class="fn">会话状态回退</div>
-      <div class="use">改坏了能退，试错少成本。配合 deepread 用——先读透再改。</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">8.2s 增量装</span></div>
-    </div>
+// L1 · AI 评测实时填充（构建时生成 reviews.json，页面加载注入）
+(function(){
+  var boxes = document.querySelectorAll('.ai-box');
+  function fill(data){
+    if(!data) return;
+    boxes.forEach(function(box){
+      var art = box.closest('.item');
+      var key = art ? (art.querySelector('.like-btn')||{}).getAttribute && art.querySelector('.like-btn').getAttribute('data-plugin') : null;
+      if(!key || !data[key]) return;
+      var d = data[key];
+      var sum = box.querySelector('[data-ai="summary"]');
+      var yes = box.querySelector('[data-ai="yes"]');
+      var no  = box.querySelector('[data-ai="no"]');
+      if(sum) sum.innerHTML = '<b>核心价值</b><br>' + (d.summary||'');
+      if(yes) yes.innerHTML = '<b>使用场景</b>' + (d.yes||'');
+      if(no)  no.innerHTML  = '<b>真实风险</b>' + (d.no||'');
+    });
+  }
+  fetch('reviews.json', {cache:'no-cache'}).then(function(r){ return r.json(); }).then(fill).catch(function(){ /* 用兜底层写死内容，静默 */ });
+})();
 
-    <div class="pc">
-      <div class="top"><span class="name">treg</span><span class="ver">@0.11.0</span></div>
-      <div class="fn">2600+ 外部接口目录（按事检索）</div>
-      <div class="use">研究向，需免费 TREG_TOKEN。找 API、接第三方服务时用得上。</div>
-      <div class="top"><span class="badge b-warn">⚠️ 存疑 · ingredient</span></div>
-    </div>
+// L1 · 一键安装包生成器（纯前端，勾选→拼脚本→复制）
+(function(){
+  var panel = document.getElementById('pack-panel');
+  if(!panel) return;
+  var listEl = panel.querySelector('.pack-list');
+  var outEl  = panel.querySelector('.pack-out');
+  var copyBtn= panel.querySelector('.pack-copy');
+  // 从所有卡片的 data-plugin + 安装命令收集
+  var items = [];
+  document.querySelectorAll('.item').forEach(function(art){
+    var lb = art.querySelector('.like-btn'); var vc = art.querySelector('.v-copy');
+    if(!lb || !vc) return;
+    var name = lb.getAttribute('data-plugin');
+    var cmd = vc.getAttribute('data-cmd') || ('dsh plugin add ' + name);
+    items.push({name:name, cmd:cmd, label: (art.querySelector('.v-name')||{}).textContent || name});
+  });
+  listEl.innerHTML = items.map(function(it,i){
+    return '<label class="pack-opt"><input type="checkbox" data-cmd="'+it.cmd.replace(/"/g,'&quot;')+'"> '+it.label+'</label>';
+  }).join('');
+  function update(){
+    var cmds = [...listEl.querySelectorAll('input:checked')].map(function(c){ return c.getAttribute('data-cmd'); });
+    outEl.textContent = cmds.length ? cmds.join(' && ') : '# 勾选上方插件，自动拼好安装命令';
+    copyBtn.style.display = cmds.length ? 'inline-block' : 'none';
+  }
+  listEl.addEventListener('change', update);
+  copyBtn.addEventListener('click', function(){
+    var txt = outEl.textContent;
+    var done = function(){ copyBtn.textContent='已复制'; setTimeout(function(){ copyBtn.textContent='复制命令'; }, 1600); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done).catch(function(){ fallback(txt,done); }); }
+    else fallback(txt, done);
+  });
+  function fallback(txt, done){
+    var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); done(); }catch(e){} document.body.removeChild(ta);
+  }
+  update();
+})();
 
-    <div class="pc">
-      <div class="top"><span class="name">dsh-plan-execute</span><span class="ver">—</span></div>
-      <div class="fn">规划/执行双模型路由（省 API）</div>
-      <div class="use">控成本——但 dsh 原生就支持，无需装。别重复造轮子。</div>
-      <div class="top"><span class="badge b-no">❌ 否 · 劝退</span><span style="color:var(--faint);font-size:12px">装失败 + 原生更稳</span></div>
-    </div>
-
-    <div class="pc">
-      <div class="top"><span class="name">dsh-library</span><span class="ver">@0.1.0</span></div>
-      <div class="fn">本地优先文档知识库（RAG）</div>
-      <div class="use">本地 KB、数据不出本机。适合敏感资料、不想上传云端的场景。</div>
-      <div class="top"><span class="badge b-warn">⚠️ 坑已定位</span><span style="color:var(--faint);font-size:12px">需 allowBuilds</span></div>
-    </div>
-
-    <div class="pc featured">
-      <div class="top"><span class="name">dsh-agent-teams</span><span class="ver">@0.1.6</span></div>
-      <div class="fn">多 Agent 协作 / 角色化团队</div>
-      <div class="use">一人扛多活，把任务分派给多个 agent。配合 agency-agents 角色库用效果更佳。</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m9s 装通 · 零编译</span></div>
-    </div>
-
-    <div class="pc featured">
-      <div class="top"><span class="name">dsh-memory-evolve</span><span class="ver">@0.1.0</span></div>
-      <div class="fn">跨会话长记忆 + 自我进化</div>
-      <div class="use">反复协作不重复交代，AI 越用越懂你。适合长期合作的主理人。</div>
-      <div class="top"><span class="badge b-ok">✅ 认</span><span style="color:var(--faint);font-size:12px">1m34s 装通 · 零编译</span></div>
-    </div>
-
-    <div class="pc">
-      <div class="top"><span class="name">dsh-deep-research</span><span class="ver">@0.1.0</span></div>
-      <div class="fn">自适应深度研究闭环（多源自研）</div>
-      <div class="use">竞品/市场调研，比 deepread 深一层。复杂主题自动扩展轮次，边际增益验证。</div>
-      <div class="top"><span class="badge b-warn">⚠️ web 不可用</span><span style="color:var(--faint);font-size:12px">装通但缺 workflow 引擎→Loader pending</span></div>
-    </div>
-
-  </div>
-  <p class="lead" style="margin-top:16px">每篇带交付的深度评测（含劝退阈值 + 6 条通用安装坑）在仓库 <a href="https://github.com/qianchuan-ai/opc-ai-harness" target="_blank" rel="noopener">reviews/</a>；按场景的安装命令在 <a href="https://github.com/qianchuan-ai/opc-ai-harness" target="_blank" rel="noopener">recipes/</a>。</p>
-</section>
-
-<section id="pits" class="wrap">
-  <h2>通用<span class="k">安装坑</span></h2>
-  <p class="lead">这些是所有 <code>dsh plugin add</code> 都会撞的，先读省一大截。</p>
-
-  <div class="pit">
-    <span class="n">01</span>
-    <div class="t"><b>Windows / WorkBuddy 环境</b>：底层 pnpm 安全删除调回收站被拦截，报 <code>SAFE_DELETE_BULK_GUARD_ERROR</code>（CODEBUDDY_SESSION_ID is not set）。<br/>→ 修复：给 <code>CODEBUDDY_SESSION_ID</code> 一个<b>非空值</b>（如 <code>wb</code>），shim 即 early-return：<br/>
-<pre><code>CODEBUDDY_SESSION_ID=wb npx -y @deepseek-ai/dsh plugin --profile web add &lt;owner/repo&gt;</code></pre>
-不走 WorkBuddy 终端的机器一般不会撞这个。</div>
-  </div>
-
-  <div class="pit">
-    <span class="n">02</span>
-    <div class="t"><b>缺 pnpm</b>：<code>dsh plugin add</code> 依赖 pnpm，文档没强调。先 <code>npm i -g pnpm</code>。</div>
-  </div>
-
-  <div class="pit">
-    <span class="n">03</span>
-    <div class="t"><b>GitHub HEAD 偶发 ECONNRESET / ETIMEDOUT</b>：网络抖动，pnpm 自动重试，不用管。</div>
-  </div>
-
-  <div class="pit">
-    <span class="n">04</span>
-    <div class="t"><b>首装 compose 重</b>：首次拉全量 profile 依赖可能 1–3 分钟，别当卡死。</div>
-  </div>
-
-  <div class="pit">
-    <span class="n">05</span>
-    <div class="t"><b>私有 / 需鉴权仓库匿名装不上</b>：报 <code>ERR_PNPM_GIT_RESOLVE_FAILED ... could not read Username</code>。普通主理人直接放弃该仓库版，找原生能力或预编译版替代（参考 dsh-plan-execute：双模型路由用 dsh 原生切换即可）。</div>
-  </div>
-
-  <div class="pit">
-    <span class="n">06</span>
-    <div class="t"><b>npm 缓存锁（沙箱特性）</b>：安装中途失败后，再装任何插件都 <code>EPERM ... _cacache ...</code>。这是 WorkBuddy 沙箱的进程级独占锁 artifact，不是插件缺陷；干净机器无此问题。遇上了换本地缓存 <code>npm_config_cache=&lt;工作区&gt;/.npmcache</code> 绕开。</div>
-  </div>
-</section>
-
-<section id="tools" class="wrap">
-  <h2>配套<span class="k">工具</span></h2>
-  <p class="lead">不是 dsh 插件，但属 OPC 主理人 AI 生产力拼图。都还没真测，标注状态，<b>不背书</b>。</p>
-  <div class="cards">
-
-    <div class="pc">
-      <div class="top"><span class="name">矩媒 MatrixMedia</span><span class="ver">GPL-2.0</span></div>
-      <div class="fn">多平台视频矩阵发布（抖音/快手/B站/小红书/视频号）</div>
-      <div class="use">原生 MCP Server，一次铺多平台分发</div>
-      <div class="top"><span class="badge b-warn">⚠️ ToS 灰区</span><span style="color:var(--faint);font-size:12px">Puppeteer 模拟登录踩平台规则</span></div>
-    </div>
-
-    <div class="pc">
-      <div class="top"><span class="name">agency-agents 角色库</span><span class="ver">MIT</span></div>
-      <div class="fn">232 个结构化 AI 角色（中文版 agency-agents-zh）</div>
-      <div class="use">配 dsh-agent-teams 当角色定义层</div>
-      <div class="top"><span class="badge b-warn">🕒 待验证</span></div>
-    </div>
-
-    <div class="pc">
-      <div class="top"><span class="name">srt-whiteboard-animation</span><span class="ver">MIT</span></div>
-      <div class="fn">SRT 字幕 → 白板手绘动画短视频</div>
-      <div class="use">知识类口播转不露脸白板视频</div>
-      <div class="top"><span class="badge b-warn">🕒 待验证</span><span style="color:var(--faint);font-size:12px">强依赖先有线稿</span></div>
-    </div>
-
-    <div class="pc">
-      <div class="top"><span class="name">yichen-x-slicer</span><span class="ver">Skill</span></div>
-      <div class="fn">X 推文一键切片成视频</div>
-      <div class="use">自己的 X 内容多平台分发</div>
-      <div class="top"><span class="badge b-warn">⚠️ 授权红线</span><span style="color:var(--faint);font-size:12px">只切自己授权的</span></div>
-    </div>
-
-  </div>
-</section>
-
-<section id="faces" class="wrap">
-  <h2>去哪找<span class="k">谦川</span></h2>
-  <div class="faces">
-    <div class="face"><div class="ic">🐙</div><h3>GitHub <span class="badge" style="background:var(--bg2);color:var(--faint);border:1px solid var(--line);font-size:11px">你在这</span></h3><p>证据库：每个插件都真装过，坑和上手命令全写在这</p></div>
-    <div class="face"><div class="ic">📣</div><h3>公众号 · 小红书 · 视频号 · X</h3><p>内容门面：避坑笔记持续更新</p><div class="social"><a href="https://www.xiaohongshu.com/user/profile/6a54bc54000000000803e072" target="_blank" rel="noopener">小红书主页 ↗</a><a href="https://x.com/caelus2x" target="_blank" rel="noopener">X @caelus2x ↗</a></div></div>
-    <div class="face"><div class="ic">💬</div><h3>微信</h3><p>私域：有问题直接找谦川</p><div class="wxid" onclick="navigator.clipboard.writeText('sheshouzuo3366').then(()=>{var t=this.querySelector('.cp');var o=t.textContent;t.textContent='已复制';setTimeout(()=>t.textContent=o,1500)})"><span>sheshouzuo3366</span><span class="cp">点击复制</span></div></div>
-  </div>
-</section>
-
-<footer class="wrap">
-  <p>dsh 为 Developer Preview，配置会随版本腐烂，崩了按批注找降级方案。</p>
-  <p style="margin-top:8px">opc-ai-harness · 谦川 · 热点皆过客，道是归处</p>
-</footer>
-
+// 卡片内·古代法帖落款（仅国风显示，CSS 控制显隐；此处按卡片顺序轮询填充真实名句）
+(function(){
+  // 真实古代名人法帖名句 + 出处落款（纯装饰，与实测调性呼应：求真 / 慎装 / 躬行）
+  var FATI_POOL = [
+    {t:'后之视今，亦犹今之视昔', s:'王羲之·兰亭序'},
+    {t:'古之立大事者，不惟有超世之才，亦必有坚忍不拔之志', s:'苏轼·晁错论'},
+    {t:'心正则笔正', s:'柳公权'},
+    {t:'翰不虚动，下必有由', s:'孙过庭·书谱'},
+    {t:'随人作计终后人，自成一家始逼真', s:'黄庭坚'},
+    {t:'非淡泊无以明志，非宁静无以致远', s:'诸葛亮·诫子书'},
+    {t:'天下事，在局外呐喊议论总无益，必躬身入局', s:'曾国藩'},
+    {t:'读万卷书，行万里路', s:'顾炎武'},
+    {t:'心既贮之，随意落笔，皆得自然', s:'米芾'},
+    {t:'遇事不敢忽也', s:'欧阳修'},
+    {t:'知行合一', s:'王阳明'},
+    {t:'点画皆有筋骨，字体自然雄媚', s:'颜真卿'},
+    {t:'纸上得来终觉浅，绝知此事要躬行', s:'陆游·冬夜读书'},
+    {t:'博观而约取，厚积而薄发', s:'苏轼·稼说'},
+    {t:'业精于勤，荒于嬉', s:'韩愈·进学解'},
+    {t:'欲穷千里目，更上一层楼', s:'王之涣·登鹳雀楼'},
+    {t:'千淘万漉虽辛苦，吹尽狂沙始到金', s:'刘禹锡·浪淘沙'}
+  ];
+  var nodes = document.querySelectorAll('.item-fati');
+  nodes.forEach(function(el, i){
+    var d = FATI_POOL[i % FATI_POOL.length];
+    el.innerHTML = '<div class="if-col">'+d.t+'</div><div class="if-seal">'+d.s+'</div>';
+  });
+})();
+</script>
 </body>
 </html>

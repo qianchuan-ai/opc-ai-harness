@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qianchuan-ai.github.io/opc-ai-harness/sitemap.xml
