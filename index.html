@@ -225,10 +225,15 @@
   [data-theme="dark"] body{background-image:none}
   /* 卡片内·古代法帖落款：仅国风显示，竖排名句 + 朱印落款 */
   .item-philosophy{display:flex;justify-content:flex-end;align-items:flex-start;gap:14px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);opacity:.62}
-  [data-theme="dark"] .item-philosophy,[data-theme="mosaic"] .item-philosophy{display:none}
   .item-philosophy .ip-col{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:18px;line-height:1.3;color:#3a3328;letter-spacing:2px;max-height:160px}
   .item-philosophy .ip-col b{color:var(--accent);font-weight:400}
   .item-philosophy .ip-seal{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-cn);font-size:13px;line-height:1.3;color:#f7f1e3;background:var(--accent);padding:9px 6px;border-radius:5px;box-shadow:0 1px 0 rgba(0,0,0,.15);letter-spacing:1px;max-height:160px;white-space:nowrap}
+  /* 暗夜：淡墨字 + 朱砂印 */
+  [data-theme="dark"] .item-philosophy .ip-col{color:#c7cdD6}
+  [data-theme="dark"] .item-philosophy .ip-seal{color:#0b0e14;background:var(--accent)}
+  /* 马赛克：亮字 + 像素硬印 */
+  [data-theme="mosaic"] .item-philosophy .ip-col{color:#e8e8f0;letter-spacing:1px}
+  [data-theme="mosaic"] .item-philosophy .ip-seal{color:#0d0d12;background:var(--accent);border-radius:0}
   /* nav 去毛玻璃改宣纸实色 + 朱砂下框 */
   nav{background:rgba(243,236,224,.93);border-bottom:2px solid var(--line)}
   [data-theme="dark"] nav{background:rgba(11,14,20,.86);border-bottom:1px solid var(--line)}
