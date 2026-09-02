@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-09-02",
+  "source": "GitHub API (anonymous)",
+  "note": "由 gen_rank.js 生成；star 为快照值，页面按此渲染周榜。收录不代表推荐。",
+  "items": [
+    {
+      "repo": "zhu1090093659/dsh-web",
+      "stars": 6675,
+      "url": "https://github.com/zhu1090093659/dsh-web",
+      "pushedAt": "2026-09-02T02:12:21Z",
+      "archived": false
+    },
+    {
+      "repo": "liustack/modlens",
+      "stars": 3829,
+      "url": "https://github.com/liustack/modlens",
+      "pushedAt": "2026-09-01T06:47:52Z",
+      "archived": false
+    },
+    {
+      "repo": "ccch1mneyyy/dsh-TUI",
+      "stars": 2774,
+      "url": "https://github.com/ccch1mneyyy/dsh-TUI",
+      "pushedAt": "2026-09-02T02:47:34Z",
+      "archived": false
+    },
+    {
+      "repo": "Small-tailqwq/dsh-deep-whale",
+      "stars": 1878,
+      "url": "https://github.com/Small-tailqwq/dsh-deep-whale",
+      "pushedAt": "2026-08-31T04:59:04Z",
+      "archived": false
+    },
+    {
+      "repo": "NanmiCoder/dsh-agent-teams",
+      "stars": 1268,
+      "url": "https://github.com/NanmiCoder/dsh-agent-teams",
+      "pushedAt": "2026-08-31T09:12:22Z",
+      "archived": false
+    },
+    {
+      "repo": "FSMargoo/dsh-at-file",
+      "stars": 504,
+      "url": "https://github.com/FSMargoo/dsh-at-file",
+      "pushedAt": "2026-09-01T01:00:35Z",
+      "archived": false
+    },
+    {
+      "repo": "csyangwen/dsh-memory-evolve",
+      "stars": 268,
+      "url": "https://github.com/csyangwen/dsh-memory-evolve",
+      "pushedAt": "2026-08-24T13:42:39Z",
+      "archived": false
+    },
+    {
+      "repo": "Han-1413141/dsh-cost-meter",
+      "stars": 243,
+      "url": "https://github.com/Han-1413141/dsh-cost-meter",
+      "pushedAt": "2026-09-01T15:05:50Z",
+      "archived": false
+    },
+    {
+      "repo": "Anionex/dsh-turn-rewind",
+      "stars": 109,
+      "url": "https://github.com/Anionex/dsh-turn-rewind",
+      "pushedAt": "2026-09-01T10:28:41Z",
+      "archived": false
+    },
+    {
+      "repo": "xiehuan123/dsh-deepread",
+      "stars": 44,
+      "url": "https://github.com/xiehuan123/dsh-deepread",
+      "pushedAt": "2026-08-30T05:45:59Z",
+      "archived": false
+    },
+    {
+      "repo": "goodpostidea-tech/deepseek-harness-skin",
+      "stars": 2,
+      "url": "https://github.com/goodpostidea-tech/deepseek-harness-skin",
+      "pushedAt": "2026-08-13T17:22:08Z",
+      "archived": false
+    }
+  ]
+}

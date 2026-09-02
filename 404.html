@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 · 此处无筌 · dsh 插件实测策展</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root{
+    --bg:#171310; --card:#211a15; --line:#372e26; --text:#f7f1e3;
+    --muted:#9c8e7c; --accent:#c15346; --good:#3ddc97;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:"Noto Serif SC","Songti SC",serif;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:48px 56px; max-width:520px; width:100%; text-align:center;
+  }
+  .big{
+    font-size:88px; font-weight:700; line-height:1;
+    background:linear-gradient(135deg,var(--accent),#8b3a2e);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .quote{margin:22px 0 8px; font-size:15px; color:var(--text); line-height:1.7}
+  .quote em{color:var(--muted); font-style:normal; display:block; font-size:13px; margin-top:4px}
+  .sub{color:var(--muted); font-size:13px; margin:14px 0 26px; line-height:1.6}
+  a.back{
+    display:inline-block; padding:10px 26px; border-radius:10px;
+    background:var(--accent); color:#fff; text-decoration:none; font-size:14px;
+    transition:opacity .2s;
+  }
+  a.back:hover{opacity:.85}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="big">404</div>
+    <p class="quote">「得鱼忘筌」——<br>这条小径上的筌，已被收走了。
+      <em>《庄子 · 外物》</em>
+    </p>
+    <p class="sub">页面不存在，或已随某次重构移走。<br>若你确信这里该有内容，去 GitHub 提 issue，我替你踩过的坑一起补上。</p>
+    <a class="back" href="/">← 回策展馆首页</a>
+  </div>
+</body>
+</html>

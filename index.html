@@ -1210,36 +1210,53 @@
 <script>
 (function(){
   var repos = [
-    "omdsh-dev/dsh-at-file",
+    "FSMargoo/dsh-at-file",
     "liustack/modlens",
     "csyangwen/dsh-memory-evolve",
     "Anionex/dsh-turn-rewind",
     "xiehuan123/dsh-deepread",
-    "zhu1090093659/dsh-web-ui",
-    "ccch1mneyyy/dsh-tui",
+    "zhu1090093659/dsh-web",
+    "ccch1mneyyy/dsh-TUI",
     "goodpostidea-tech/deepseek-harness-skin",
-    "Han-1413141/dsh-cost-meter"
+    "Han-1413141/dsh-cost-meter",
+    "NanmiCoder/dsh-agent-teams"
   ];
   var note = document.getElementById('rank-note');
   var list = document.getElementById('rank-list');
-  var FAIL = '★=收藏数 · 实时拉取失败，显示示例数据 · 但榜上很多我没装过，标了才信';
-  Promise.all(repos.map(function(r){
-    return fetch('https://api.github.com/repos/'+r, {headers:{'Accept':'application/vnd.github+json'}})
-      .then(function(res){ if(!res.ok) throw new Error(r); return res.json(); })
-      .then(function(d){ return {name:r, stars:d.stargazers_count, url:d.html_url}; })
-      .catch(function(){ return null; });
-  })).then(function(results){
-    var ok = results.filter(Boolean);
-    if(ok.length === 0){ if(note) note.textContent = FAIL; return; }
-    ok.sort(function(a,b){ return b.stars - a.stars; });
-    var top = ok.slice(0,8);
-    list.innerHTML = top.map(function(it){
-      return '<li><a href="'+it.url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="nm">'+it.name+'</span><span class="st">★ '+it.stars+'</span></a></li>';
-    }).join('');
-    if(note) note.textContent = '★=收藏数 · 实时拉 GitHub API（刚刚更新）· 但榜上很多我没装过，标了才信';
-  }).catch(function(){ if(note) note.textContent = FAIL; });
-})();
+  var FAIL = '★ 实时拉取失败，显示示例数据 · 榜上很多我没装过，标了才信';
 
+  function render(items, srcLbl){
+    list.innerHTML = items.map(function(it){
+      return '<li><a href="'+it.url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="nm">'+it.repo+'</span><span class="st">★ '+it.stars.toLocaleString()+'</span></a></li>';
+    }).join('');
+    if(note) note.textContent = srcLbl;
+  }
+
+  // 优先读构建时生成的 rank.json（本地零限流、秒开）；失败回退实时 GitHub API
+  fetch('rank.json', {cache:'no-cache'}).then(function(res){
+    if(!res.ok) throw 0;
+    return res.json();
+  }).then(function(db){
+    if(!db || !Array.isArray(db.items)) throw 0;
+    var items = db.items.filter(function(it){ return it && typeof it.stars === 'number' && !it.archived; })
+      .sort(function(a,b){ return b.stars - a.stars; });
+    if(items.length === 0) throw 0;
+    render(items.slice(0, 8), '★ 来自 GitHub · rank.json 更新于 ' + db.generatedAt + ' · 收录不代表推荐' );
+  }).catch(function(){
+    // 兜底：实时拉 GitHub API（匿名限流 60 次/时/IP，仅当 rank.json 缺失/损坏时走到这里）
+    Promise.all(repos.map(function(r){
+      return fetch('https://api.github.com/repos/'+r, {headers:{'Accept':'application/vnd.github+json'}})
+        .then(function(res){ if(!res.ok) throw new Error(r); return res.json(); })
+        .then(function(d){ return {repo:d.full_name, stars:d.stargazers_count, url:d.html_url}; })
+        .catch(function(){ return null; });
+    })).then(function(results){
+      var ok = results.filter(Boolean);
+      if(ok.length === 0){ if(note) note.textContent = FAIL; return; }
+      ok.sort(function(a,b){ return b.stars - a.stars; });
+      render(ok.slice(0,8), '★ 实时拉 GitHub API（刚刚更新）· 收录不代表推荐');
+    }).catch(function(){ if(note) note.textContent = FAIL; });
+  });
+})();
 // 图标内容按主题区分（国风汉字 / 暗夜几何字母 / 马赛克像素块）
 var ICON_MAP = {
   guofeng: { ok:'✓', bad:'✕', ai:'墨', hot:'热', news:'讯', sc:'集', sc2:'档', seal:'鉴', heart:'藏', warn:'注意', shot:'图' },
